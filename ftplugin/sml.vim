@@ -18,12 +18,12 @@ let b:delimitMate_quotes = "\""
 " ----- scrooloose/syntastic -----
 " Attempt to detect CM files in SML/NJ checker
 function! s:DetectCM(fname) abort
-    let cm = syntastic#util#findGlobInParent('*.cm', fnamemodify(a:fname, ':p:h'))
-    if cm !=# ''
-        let buf = bufnr(fnameescape(a:fname))
-        call setbufvar(buf, 'syntastic_sml_smlnj_args', '-m ' . syntastic#util#shescape(cm))
-        call setbufvar(buf, 'syntastic_sml_smlnj_fname', '')
-    endif
+  let cm = syntastic#util#findGlobInParent('*.cm', fnamemodify(a:fname, ':p:h'))
+  if cm !=# ''
+    let buf = bufnr(fnameescape(a:fname))
+    call setbufvar(buf, 'syntastic_sml_smlnj_args', '-m ' . syntastic#util#shescape(cm))
+    call setbufvar(buf, 'syntastic_sml_smlnj_fname', '')
+  endif
 endfunction
 
 call s:DetectCM(expand('<amatch>', 1))
