@@ -202,12 +202,6 @@ function! GetSMLIndent()
       let ind = ind + &sw
 
     endif
-
-    " Don't indent 'let' if last line started with 'fun', 'fn'
-    if line =~ '^\s*let\>'
-      if lline =~ '^\s*\(fun\|fn\)'
-        let ind = ind - &sw
-      endif
   endif
 
   return ind
