@@ -13,24 +13,20 @@ setlocal iskeyword+='
 setlocal commentstring=(*%s*)
 
 " ----- Raimondi/delimitMate -----
-let b:delimitMate_quotes = "\""
+let b:delimitMate_quotes = '"'
 
 " ----- scrooloose/syntastic -----
 " Attempt to detect CM files in SML/NJ checker
-function! s:DetectCM(fname) abort
-  let cm = syntastic#util#findGlobInParent('*.cm', fnamemodify(a:fname, ':p:h'))
-  if cm !=# ''
-    let buf = bufnr(fnameescape(a:fname))
-    call setbufvar(buf, 'syntastic_sml_smlnj_args', '-m ' . syntastic#util#shescape(cm))
-    call setbufvar(buf, 'syntastic_sml_smlnj_fname', '')
-  endif
-endfunction
-
-call s:DetectCM(expand('<amatch>', 1))
+let s:cm = syntastic#util#findGlobInParent('*.cm', expand('%:p:h', 1))
+if s:cm !=# ''
+  let s:buf = bufnr('')
+  call setbufvar(s:buf, 'syntastic_sml_smlnj_args', '-m ' . syntastic#util#shescape(cm))
+  call setbufvar(s:buf, 'syntastic_sml_smlnj_fname', '')
+endif
 
 " ----- a.vim -----
 " Sets up *.sig and *.sml files as "alternates", similar to how *.h and *.c
 " files are alternates
-let g:alternateExtensions_sml = "sig"
-let g:alternateExtensions_sig = "sml"
+let g:alternateExtensions_sml = 'sig'
+let g:alternateExtensions_sig = 'sml'
 
