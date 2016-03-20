@@ -20,7 +20,7 @@ let b:did_indent = 1
 
 setlocal expandtab
 setlocal indentexpr=GetSMLIndent()
-setlocal indentkeys+=0=and,0=else,0=end,0=handle,0=if,0=in,0=let,0=then,0=val,0=fun,0=\|,0=*),0)
+setlocal indentkeys+=0=and,0=else,0=end,0=handle,0=if,0=in,0=let,0=then,0=val,0=fun,0=of,0=\|,0=*),0)
 setlocal nolisp
 setlocal nosmartindent
 setlocal textwidth=80
@@ -188,11 +188,13 @@ function! GetSMLIndent()
 
   " Indent if last line ends with 'of', align from 'case'
   elseif lline =~ '\<\(of\)\s*$'
+    echo 'yo'
     call search('\<case\>',"bW")
     let ind = col(".")+4
 
     " Indent if current line starts with 'of'
   elseif line =~ '^\s*of\>'
+    echo 'hello'
     call search('\<case\>',"bW")
     let ind = col(".")+1
 

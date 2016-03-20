@@ -19,6 +19,19 @@ will get you up to speed.
 ### Indentation
 
 - [x] `let` statements are indented under `fun` statements
+- [x] Using handing `of` inside a parenthesized case statement is properly
+  re-indented. For example, this:
+
+      (case x
+      of|)
+
+  becomes
+
+      (case x
+         of|)
+
+  This should already be handled when the expression is not parenthesized; we
+  fix it when it is.
 - [ ] Indent level is properly adjusted when using nested case statements.
   Consider the following snippet of SML:
 
