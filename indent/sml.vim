@@ -136,11 +136,11 @@ function! GetSMLIndent()
 
   " Match 'then' with 'if'
   elseif line =~ '^\s*then\>'
-  if lline !~ '^\s*\(if\|else\|then\)\>'
-    return s:FindPair('\<if\>', '', '\<then\>')
-  else
-    return ind
-  endif
+    if lline !~ '^\s*\(if\|else\|then\)\>'
+      return s:FindPair('\<if\>', '', '\<then\>')
+    else
+      return ind
+    endif
 
   " Indent if current line begins with ']'
   elseif line =~ '^\s*\]'
@@ -188,13 +188,11 @@ function! GetSMLIndent()
 
   " Indent if last line ends with 'of', align from 'case'
   elseif lline =~ '\<\(of\)\s*$'
-    echo 'yo'
     call search('\<case\>',"bW")
     let ind = col(".")+4
 
-    " Indent if current line starts with 'of'
+  " Indent if current line starts with 'of'
   elseif line =~ '^\s*of\>'
-    echo 'hello'
     call search('\<case\>',"bW")
     let ind = col(".")+1
 
