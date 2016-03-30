@@ -202,14 +202,6 @@ function! GetSMLIndent()
       let ind = ind + &sw
 
     endif
-
-  " The existence of this indent script interferes with the value of
-  " 'comments'; this is a workaround to properly indent multiline comments.
-  " Be warned: changing the value of 'comments' won't work as expected,
-  " because this indent script overwrites the indentation level on <CR>.
-  elseif line =~ '^\s*\*'
-    call search('(\*',"bW")
-    let ind = col(".")
   endif
 
   return ind
