@@ -12,7 +12,12 @@ setlocal iskeyword+='
 " appropriately.
 setlocal commentstring=(*%s*)
 
+" The default lprolog filetype plugin that ships with Vim interferes with SML.
+" To fight back, we explicitly turn off the formatprg here.
+setlocal formatprg=
+
 " ----- Raimondi/delimitMate -----
+" Single quotes are part of identifiers, and shouldn't always come in pairs.
 let b:delimitMate_quotes = '"'
 
 " ----- scrooloose/syntastic -----
