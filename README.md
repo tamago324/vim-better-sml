@@ -16,6 +16,16 @@ will get you up to speed.
 
 ## Summary of Modifications
 
+### Syntax
+
+- [x] Highlight `=>` correctly as a single operator
+- [x] Highlight type variables
+- [x] Set up conceal characters for common type variables (i.e., `'a -> α`)
+- [x] Highlight `fun` and `fn` with `Function` instead of `Keyword`
+- [x] Set up conceal characters for `fn -> λ.`
+
+![Syntax highlighting preview](https://cloud.githubusercontent.com/assets/5544532/16899173/b5e00668-4bae-11e6-9e56-2cf5befbec57.png)
+
 ### Indentation
 
 - [x] `let` statements are indented under `fun` statements
