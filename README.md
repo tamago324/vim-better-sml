@@ -93,5 +93,5 @@ will get you up to speed.
 <!-- References -->
 
 [vim-ide]: https://github.com/jez/vim-as-an-ide
-[issue-1]: https://github.com/jez/vim-sml/issues/1
+[issue-1]: https://github.com/jez/vim-better-sml/issues/1
 [tpope/vim-commentary]: https://github.com/tpope/vim-commentary
