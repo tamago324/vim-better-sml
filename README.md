@@ -55,8 +55,8 @@ will get you up to speed.
   fix it when it is.
 - [x] Smarter indentation when writing imperative code with `;`. For example:
 
-      (print "hello\n";
-      |)
+        (print "hello\n";
+        |)
 
   becomes
 
