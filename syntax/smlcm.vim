@@ -8,7 +8,7 @@
 " to see them in real life. If you miss support for CM macros, consider adding
 " it!
 
-syn match    smlCommentErr "\*)"
+syn match   smlCommentErr "\*)"
 
 syn keyword smlcmKeyword group   Group   GROUP
 syn keyword smlcmKeyword library Library LIBRARY
