@@ -191,6 +191,12 @@ function! GetSMLIndent()
     call search('\<case\>',"bW")
     let ind = col(".")+4
 
+  " Indent if last line ends with ';', align from 'case'
+  elseif lline =~ ';\s*$'
+    call cursor(lnum, 1)
+    call search('\w', '', lnum)
+    let ind = col(".") - 1
+
   " Indent if current line starts with 'of'
   elseif line =~ '^\s*of\>'
     call search('\<case\>',"bW")
