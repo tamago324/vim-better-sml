@@ -28,6 +28,15 @@ will get you up to speed.
 
 ![Syntax highlighting preview](https://cloud.githubusercontent.com/assets/5544532/16899173/b5e00668-4bae-11e6-9e56-2cf5befbec57.png)
 
+### Other Syntax Definitions
+
+- [x] Signature files (`*.sig`)
+- [x] ML-Lex files (`*.lex`)
+- [x] ML-Yacc files (`*.grm`)
+- [x] Smackage files (`*.smackspec`)
+- [x] CM files (`*.cm`)
+- [x] MLBasis files (`*.mlbasis`)
+
 ### Indentation
 
 - [x] `let` statements are indented under `fun` statements
@@ -44,6 +53,18 @@ will get you up to speed.
 
   This should already be handled when the expression is not parenthesized; we
   fix it when it is.
+- [x] Smarter indentation when writing imperative code with `;`. For example:
+
+      (print "hello\n";
+      |)
+
+  becomes
+
+      (print "hello\n";
+       |)
+
+  That is, whenever a line ends in a `;`, the cursor is aligned to the first
+  word character of the previous line, not to the first character on the line.
 - [ ] Indent level is properly adjusted when using nested case statements.
   Consider the following snippet of SML:
 
@@ -66,7 +87,6 @@ will get you up to speed.
 
 ### Filetype
 
-- [x] Detects signature files (`*.sig`) properly
 - [x] Treats apostrophes (`'`) as keyword characters (i.e., we can use "primes"
   in variable names)
 - [x] Sets up the comment string properly. This is useful...
