@@ -191,8 +191,9 @@ function! GetSMLIndent()
     call search('\<case\>',"bW")
     let ind = col(".")+4
 
-  " Indent if last line ends with ';', align from 'case'
-  elseif lline =~ ';\s*$'
+  " Indent if last line ends with ',' or ';', align from last word char
+  " (usually finds parens, and skips over until word character)
+  elseif lline =~ '[;,]\s*$'
     call cursor(lnum, 1)
     call search('\w', '', lnum)
     let ind = col(".") - 1
