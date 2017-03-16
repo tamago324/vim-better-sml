@@ -127,6 +127,9 @@ syn keyword smlFunction fun
 " Conceal 'o' (composition function) as unicode character
 syn keyword smlLCIdentifier o conceal cchar=∘
 
+" Highlight '$' (function application) like functions
+syn match smlFunction "\<\$\>"
+
 
 " Color fun and fn as Function
 hi def link smlFunction Function

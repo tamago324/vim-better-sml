@@ -7,6 +7,8 @@
 " Use apostrophes in variable names (useful for things like ^P (completion),
 " ^W (back delete word), etc.)
 setlocal iskeyword+='
+" '$' is valid as or in a variable name
+setlocal iskeyword+=$
 
 " Set comment string so things like vim-commentary and foldmethod can use them
 " appropriately.
