@@ -126,6 +126,15 @@ function! GetSMLIndent()
   if line =~ '^\s*end\>'
     return s:FindLet(s:module, '', '\<end\>')
 
+  " The existence of this indent script interferes with the value of
+  " 'comments'; this is a workaround to properly indent multiline comments.
+  " Be warned: changing the value of 'comments' won't work as expected,
+  " because this indent script overwrites the indentation level on <CR>.
+  elseif line =~ '^\s*\*'
+    echom "hello"
+    call search('(\*',"bW")
+    let ind = col(".")
+
   " Match 'else' with 'if'
   elseif line =~ '^\s*else\>'
     if lline !~ '^\s*\(if\|else\|then\)\>'
@@ -206,15 +215,6 @@ function! GetSMLIndent()
   " Indent if last line starts with 'fun', 'case', 'fn'
   elseif lline =~ '^\s*\(fun\|fn\|case\)\>'
     let ind = ind + &sw
-
-  " The existence of this indent script interferes with the value of
-  " 'comments'; this is a workaround to properly indent multiline comments.
-  " Be warned: changing the value of 'comments' won't work as expected,
-  " because this indent script overwrites the indentation level on <CR>.
-  elseif line =~ '^\s*\*'
-    echom "hello"
-    call search('(\*',"bW")
-    let ind = col(".")
   endif
 
   return ind
