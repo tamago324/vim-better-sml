@@ -124,6 +124,10 @@ syn match smlFnDot "n"                 contained conceal cchar=.
 " Define match group for SML function keywords
 syn keyword smlFunction fun
 
+" Conceal 'o' (composition function) as unicode character
+syn keyword smlLCIdentifier o conceal cchar=∘
+
+
 " Color fun and fn as Function
 hi def link smlFunction Function
 hi def link smlFnLam Function
