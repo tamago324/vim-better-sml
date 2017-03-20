@@ -18,8 +18,7 @@ function! bettersml#typequery#LoadUseDef() abort
     return ''
   endif
 
-  let duf = bettersml#util#findGlobInParent('*.du', expand('%:p:h', 1))
-  let udf = bettersml#util#findGlobInParent('*.ud', expand('%:p:h', 1))
+  let duf = bettersml#util#findGlobInParent('*.du', expand('%:p', 1))
 
   " duf doesn't exist; ask user to build
   if l:duf ==# ''
@@ -27,9 +26,10 @@ function! bettersml#typequery#LoadUseDef() abort
     return ''
   endif
 
+  let udf = fnamemodify(l:duf, ':r').'.ud'
+
   " udf doesn't exist; compile it
-  if l:udf ==# ''
-    let udf = fnamemodify(l:duf, ':r').'.ud'
+  if filereadable(l:udf)
     call system(l:invertDefUse.' '.l:duf.' > '.l:udf)
     return l:udf
   endif
