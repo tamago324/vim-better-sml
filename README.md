@@ -61,6 +61,7 @@ A few settings are configurable. See `:help vim-better-sml-config`.
 - [ ] Highlight unused definitions
   - Might want to do as a CLI tool
   - This way it could with with Syntastic to show markers in sign column
+- [ ] Handle non-standard mlton name/location
 
 ## License
 
