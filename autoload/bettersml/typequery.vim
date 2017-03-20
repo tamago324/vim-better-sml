@@ -18,7 +18,7 @@ function! bettersml#typequery#LoadUseDef() abort
     return ''
   endif
 
-  let duf = bettersml#util#findGlobInParent('*.du', expand('%:p', 1))
+  let duf = bettersml#util#findGlobInParent('*.du', expand('%:p:h', 1))
 
   " duf doesn't exist; ask user to build
   if l:duf ==# ''
