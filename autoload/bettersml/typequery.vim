@@ -13,8 +13,7 @@ function! bettersml#typequery#LoadUseDef() abort
   let invertDefUse = s:scriptroot.'/invert-def-use'
 
   if !executable(l:invertDefUse)
-    " TODO(jez) Update this once you've written a help file
-    echom "'invert-def-use' needs to be compiled first. Please see the documentation."
+    echom "'invert-def-use' needs to be compiled first.  :help vim-better-sml-def-use"
     return ''
   endif
 
@@ -22,7 +21,7 @@ function! bettersml#typequery#LoadUseDef() abort
 
   " duf doesn't exist; ask user to build
   if l:duf ==# ''
-    echom "You need to build a def-use file first. Please see the documentation."
+    echom "You need to build a def-use file first.  :help vim-better-sml-def-use"
     return ''
   endif
 
