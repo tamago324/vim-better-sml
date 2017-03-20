@@ -1,0 +1,6 @@
+*vim-better-sml* A collection of goodies for working with SML
+
+Online help documentation is a work in progress.
+For the time being, see the README at <https://github.com/jez/vim-better-sml>.
+
+TODO(jez) Write online help documentation.
