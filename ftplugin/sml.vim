@@ -18,6 +18,8 @@ setlocal commentstring=(*%s*)
 " To fight back, we explicitly turn off the formatprg here.
 setlocal formatprg=
 
+command! SMLTypeQuery call bettersml#typequery#TypeQuery()
+
 " ----- Raimondi/delimitMate -----
 " Single quotes are part of identifiers, and shouldn't always come in pairs.
 let b:delimitMate_quotes = '"'
