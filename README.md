@@ -2,6 +2,31 @@
 
 > Some improvements to the default SML filetype plugins for Vim.
 
+[![Screenshot](sample/example.png)](https://raw.githubusercontent.com/jez/vim-better-sml/master/sample/example.png)
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Install](#install)
+- [Features](#features)
+  - [Type Information](#type-information)
+  - [Syntax](#syntax)
+  - [Other Syntax Definitions](#other-syntax-definitions)
+  - [Indentation](#indentation)
+  - [Filetype](#filetype)
+  - [External Plugins](#external-plugins)
+- [Using `:SMLTypeQuery`](#using-smltypequery)
+  - [Caveats](#caveats)
+  - [Generating `.du` Files](#generating-du-files)
+- [Configuration](#configuration)
+  - [`conceallevel`](#conceallevel)
+  - [`g:sml_greek_tyvar_show_tick`](#gsml_greek_tyvar_show_tick)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 ## Install
 
 Install using your favorite plugin manager. For example, to install using
@@ -13,10 +38,6 @@ Plugin 'jez/vim-better-sml'
 
 If you're unfamiliar using Vim plugins, check out [Vim as an IDE][vim-ide] which
 will get you up to speed.
-
-## Summary
-
-![Screenshot](sample/example.png)
 
 ## Features
 
