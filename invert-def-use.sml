@@ -20,24 +20,29 @@
  * (which may be either a use or a def).
  * Thus, we want to 'invert' the def-use file, to get a use-def file.
  *
+ * def1
+ * def1
  *     use1
  * def1
  *     use2
  * def1
  *     use3
  * def1
- * def1
+ * def2
+ * def2
  *     use4
  * def2
  *     use5
  * def2
- * def2
  * def3
+ * def3
+ * def4
+ * def4
  *     use6
  * def4
  *
- * Each def is printed once under each use,
- * then again after all uses (because a def may never be used).
+ * Lines come in pairs: a location (i.e., use OR def) followed by a def
+ * This means that each def is printed n + 2 times if that def has n uses.
  *
  * Requirements:
  *   MLton <http://mlton.org>
@@ -63,7 +68,7 @@ fun makeMain main () =
 val isUse = String.isPrefix "    "
 
 fun eval
-  (init : 'a)
+  (init : unit -> 'a)
   (trystep : 'a -> 'a option)
   : 'a =
   let
@@ -72,17 +77,26 @@ fun eval
         of NONE => state
          | SOME state' => unfold state'
   in
-    unfold init
+    unfold (init ())
   end
 
 fun main [defUseFilename] =
   let
     val file = TextIO.openIn defUseFilename
 
-    fun step (NONE, x) = NONE
-      | step (SOME curDef, NONE) =
-        (print curDef;
-         SOME (NONE, NONE))
+    fun init () =
+      let
+        val maybeFirstDef = TextIO.inputLine file
+        val maybeFirstLine = TextIO.inputLine file
+      in
+        (case maybeFirstDef
+           of SOME firstDef => (print firstDef; print firstDef)
+            | _ => ());
+        (maybeFirstDef, maybeFirstLine)
+      end
+
+    fun step (_, NONE) = NONE
+      | step (NONE, _) = raise Fail "Impossible"
       | step (SOME curDef, SOME line) =
         if isUse line
         then
@@ -90,10 +104,11 @@ fun main [defUseFilename] =
            print curDef;
            SOME (SOME curDef, TextIO.inputLine file))
         else
-          (print curDef;
+          (print line;
+           print line;
            SOME (SOME line, TextIO.inputLine file))
   in
-    eval (TextIO.inputLine file, TextIO.inputLine file) step;
+    eval init step;
     TextIO.closeIn file;
     OS.Process.success
   end
