@@ -1,3 +1,5 @@
 .*.sw[nop]
 tags
 invert-def-use
+sample/*.du
+sample/*.ud

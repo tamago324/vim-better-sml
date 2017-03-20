@@ -19,3 +19,5 @@ val addOne = fn x => x + 1
 (* 'o' is styled like '∘' *)
 val _ = println o Int.toString o valOf $ SOME 42
 (* ... and '$' stands out in a different color *)
+
+val five = addOne "4"
