@@ -54,34 +54,13 @@ Note: type introspection (`:SMLTypeQuery`) requires that MLton is installed.
 
 A few settings are configurable. See `:help vim-better-sml-config`.
 
-<!--
 ## Future Features
 
 - [ ] Jump to definition
 - [ ] Highlight all uses and definition
 - [ ] Highlight unused definitions
-
-- [ ] Indent level is properly adjusted when using nested case statements.
-  Consider the following snippet of SML:
-
-      datatype ord = Z | S of ord | Sup of (int -> ord)
-
-      fun toString n =
-        case n
-          of Z => "0"
-           | S n' =>
-               (case n'
-                  of Z => "1"
-                   | S _ => "1 < n < aleph"
-                   | _ => "malformed")
-           | Sup f => ">= aleph"
-
-  Try transcribing this into Vim right now; the last line isn't indented
-  properly. Right now, the indent file indents lines like the last line under
-  the most recent `case` keyword, ignoring any nesting structure. See [this
-  issue][issue-1] for some of my thoughts on the matter.
--->
-
+  - Might want to do as a CLI tool
+  - This way it could with with Syntastic to show markers in sign column
 
 ## License
 
@@ -90,4 +69,3 @@ A few settings are configurable. See `:help vim-better-sml-config`.
 <!-- References -->
 
 [vim-ide]: https://github.com/jez/vim-as-an-ide
-[issue-1]: https://github.com/jez/vim-better-sml/issues/1
