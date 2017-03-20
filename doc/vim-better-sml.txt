@@ -1,6 +1,261 @@
 *vim-better-sml* A collection of goodies for working with SML
 
+              _          _   _                            _   ~
+             | |__   ___| |_| |_ ___ _ __   ___ _ __ ___ | |  ~
+             | '_ \ / _ \ __| __/ _ \ '__| / __| '_ ` _ \| |  ~
+             | |_) |  __/ |_| ||  __/ |    \__ \ | | | | | |  ~
+             |_.__/ \___|\__|\__\___|_|    |___/_| |_| |_|_|  ~
+                                                              ~
+
+=============================================================================
+CONTENTS                                            *vim-better-sml-contents*
+
+    1. Features .............................. |vim-better-sml-features|
+    2. Usage ................................. |vim-better-sml-usage|
+       2.1. Seting up Def-Use Information .... |vim-better-sml-def-use|
+    3. Configuration ......................... |vim-better-sml-config|
+       3.1. Concealing ....................... |vim-better-sml-conceal|
+       3.2. Custom Mappings .................. |vim-better-sml-mappings|
+       3.3. Filetypes ........................ |vim-better-sml-filetypes|
+    5. License & Contributing ................ |vim-better-sml-license|
+    6. Credits ............................... |vim-better-sml-credits|
+
 Online help documentation is a work in progress.
 For the time being, see the README at <https://github.com/jez/vim-better-sml>.
 
-TODO(jez) Write online help documentation.
+
+=============================================================================
+FEATURES                                             *vim-better-sml-credits*
+
+Screenshot:
+https://raw.githubusercontent.com/jez/vim-better-sml/master/sample/example.png
+
+-----------------------------------------------------------------------------
+Semantic Information~
+                                                    *vim-better-sml-semantic*
+
+- Look up type of identifier under cursor
+  - Setup required. See |vim-better-sml-def-use|.
+  - Configurable.   See |vim-better-sml-mappings|.
+
+- Show type errors in sign column
+  - Setup required. See |vim-better-sml-usage|.
+
+
+-----------------------------------------------------------------------------
+Syntax~
+                                                      *vim-better-sml-syntax*
+
+- Various corrections to default syntax highlighting
+  - Highlight `=>` correctly
+  - Highlight `fun` and `fn` with `Function`.
+  - Highlight type variables (i.e., `'a`) with `Type`.
+
+- Provide conceal characters.
+  - `'a` becomes `α`.
+  - `fn` becomes `λ.`
+  - Setup required. See |vim-better-sml-conceal|.
+  - Configurable.   See |vim-better-sml-greek|.
+
+- Syntax files for related filetypes
+  -  Extension  |  Filetype
+    ------------|-----------
+    `*.sig`       | signatures
+    `*.lex`       | ML-Lex
+    `*.grm`       | ML-Yacc
+    `*.smackspec` | Smackage
+    `*.cm`        | CM
+    `*.mlb`       | MLBasis
+  - Configurable.   See |vim-better-sml-filetypes|.
+
+
+-----------------------------------------------------------------------------
+Indentation~
+                                                 *vim-better-sml-indentation*
+
+- let expressions are indented under fun declarations
+
+      fun addOne x =
+        let ...
+
+- Smarter indentation inside parentheses.
+  -      type this     |     see this
+    -------------------|-------------------
+      `(case x`          |  `(case x`
+      `of|)`             |     `of|)`
+    -------------------|-------------------
+      `(print "hello";`  |  `(print "hello";`
+      `|)`               |   `|)`
+    -------------------|-------------------
+      `("hello",`        |  `("hello",`
+      `|)`               |   `|)`
+  - (Cursor location denoted by `|`)
+
+
+-----------------------------------------------------------------------------
+Filetype~
+                                                    *vim-better-sml-filetype*
+
+- Sets up `'` and `$` as keyword characters
+  - Useful for completion, word boundary detection, etc.
+
+- Sets up comment string properly. Useful with:
+  - vim-commentary, by tpope. (See |commentary.txt|)
+  - `set foldmethod=marker`, which is used with folding (See |fold-commands|.)
+
+
+-----------------------------------------------------------------------------
+External Plugins~
+                                                    *vim-better-sml-external*
+
+- |delimitMate|
+  - Sets up the approrpiate quote characters
+
+- a.vim
+  - Sets up `*.sig` and `*.sml` as altarnate extensions
+    (Similar to `*.h` and `*.cpp`)
+
+- Syntastic
+  - For the SML/NJ checker, automatically detects and uses a CM file.
+  - (Previously, it only worked on single files.)
+
+
+=============================================================================
+USAGE                                                  *vim-better-sml-usage*
+
+- Syntax, filetype, and indentation features
+  - No additional setup required.
+
+- Type checker error/warning feedback
+  - Install Syntastic.
+    - Be sure to check out the recommended settings: |syntastic-recommended|.
+  - Open an SML file, and save it.
+
+- *:SMLTypeQuery*
+
+  Once you've followed the setup (|vim-better-sml-def-use|),
+  place your cursor on an identifier, and run |:SMLTypeQuery|.
+
+  You may want to set up a mapping for this. See |vim-better-sml-mappings|.
+
+
+-----------------------------------------------------------------------------
+Setting Up Def-Use Information~
+                                                     *vim-better-sml-def-use*
+
+There is a bit of setup involved before you can use |:SMLTypeQuery|.
+
+1. Install `mlton`. MLton is an SML compiler (and a really nice one at that!)
+  - http://mlton.org/Installation
+  - On macOS: `brew install mlton`
+
+2. Build `invert-def-use`. This is an SML script used by |vim-better-sml|.
+
+       `cd ~/.vim/bundle/vim-better-sml`
+       `make`
+
+3. Configure your SML project to output `.du` files. From MLton:
+
+  To use def-use mode, one typically first sets up the program’s makefile or
+  build script so that the def-use information is saved each time the program
+  is compiled. Add these two flags to your build:
+    - `-show-def-use <file>.du`
+    - `-prefer-abs-paths true`
+
+  It's important to use the `.du` extension.
+
+  Computing def-use information is fast (compared to type-checking),
+  so it is recommended to simply add the options to the build proper.
+
+  However, it is only necessary to type check the program (or library),
+  so alternatively one can specify the `-stop tc` option.
+
+  Example:
+    `mlton -prefer-abs-paths true -show-def-use foo.du foo.mlb`
+
+Caveats~
+
+- This only works with MLton. If you are using another compiler, like SML/NJ,
+  you will have to set up your project to build with MLton. In most cases,
+  it's possible for them to co-exist.
+
+  Refer to the documentation for MLBasis files (similar to CM files used by
+  SML/NJ).
+
+  - http://mlton.org/MLBasisExamples
+  - http://mlton.org/MLBasis
+
+- You are responsible for building the `.du` file. It is not autogenerated.
+
+- MLton has somewhat long compilation times. This is unavoidable.
+
+
+=============================================================================
+CONFIGURATION                                         *vim-better-sml-config*
+
+-----------------------------------------------------------------------------
+Concealing~
+                                                     *vim-better-sml-conceal*
+Concealing is disabled by Vim by default. To enable it for SML files:
+
+    `au Filetype sml setlocal conceallevel=2`
+
+See 'conceallevel' for more information.
+
+                                                       *vim-better-sml-greek*
+By default, we conceal `'a` to `α`. You can instead make `'a` become `'α`:
+
+    `let g:sml_greek_tyvar_show_tick = 1`
+
+-----------------------------------------------------------------------------
+Custom Mappings~
+                                                    *vim-better-sml-mappings*
+
+This plugin registers no mappings by default. You may want to set some up for
+convenience:
+>
+    augroup smlMaps
+      au!
+      au Filetype sml nnoremap <leader>t :SMLTypeQuery<CR>
+    augroup END
+<
+
+-----------------------------------------------------------------------------
+Filetypes~
+                                                   *vim-better-sml-filetypes*
+
+The `*.lex` extension is used by many lexer generators.
+By default, vim-better-sml sets all `*.lex` files to `mllex`.
+This may not be what you want. To override this, you have a couple options:
+
+- Use a modeline (|auto-setting|) to set the filetype on a per-file
+  basis. For example, you could add this to those files:
+>
+      vim:filetype=my-other-lex-filetype
+<
+- Add an autocommand to override it unilaterally:
+>
+      au BufRead,BufNewFile *.md setlocal filetype=my-other-lex-filetype
+<
+
+
+=============================================================================
+LICENSE AND CONTRIBUTING                               *vim-better-sml-license*
+
+MIT License.
+
+Contribute on GitHub: https://github.com/jez/vim-better-sml.
+
+
+=============================================================================
+CREDITS                                              *vim-better-sml-credits*
+
+This plugin was inspired and influenced by multiple sources:
+
+- The default `sml.vim` plugin.
+- Thomas Allen's `vim-sml` for many of the extra syntax files.
+- Matthew Fluet's help pointing me to the `-show-def-use` flag
+- Aaron Yue's `vim-mltools` for inspiration.
+
+
+vim:tw=78:et:ts=2:ft=help:norl:
