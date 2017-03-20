@@ -16,6 +16,18 @@ will get you up to speed.
 
 ## Summary
 
+![Screenshot](sample/example.png)
+
+## Features
+
+### Type Information
+
+- [x] Look up type of expression under cursor
+  - **Requires some setup.** See below.
+- [ ] Jump to definition
+- [ ] Highlight all uses and definition
+- [ ] Highlight unused definitions
+
 ### Syntax
 
 - [x] Highlight `=>` correctly as a single operator
@@ -25,8 +37,6 @@ will get you up to speed.
     - Note: concealing disabled by Vim by default. See "Configuration" below.
 - [x] Highlight `fun` and `fn` with `Function` instead of `Keyword`
 - [x] Set up conceal characters for `fn -> λ.`
-
-![Syntax highlighting preview](https://cloud.githubusercontent.com/assets/5544532/16899173/b5e00668-4bae-11e6-9e56-2cf5befbec57.png)
 
 ### Other Syntax Definitions
 
@@ -105,6 +115,72 @@ will get you up to speed.
 - __a.vim__:
   - [x] Set up `*.sig` and `*.sml` as alternate extensions (similar to `*.h` and
     `*.cpp`)
+
+## Using `:SMLTypeQuery`
+
+There is a bit of setup involved before you can use `:SMLTypeQuery`.
+
+1. Install `mlton`. MLton is an SML compiler (and a really nice one at that!).
+  - <http://mlton.org/Installation>
+  - On macOS: `brew install mlton`
+
+1. Build `invert-def-use`. This is an SML script used by `vim-better-sml`.
+
+        cd ~/.vim/bundle/vim-better-sml
+        make
+
+1. Configure your SML project to output `.du` files. See "Generating `.du`
+   Files"
+
+1. Place your cursor on an identifier, and call `:SMLTypeQuery`.
+
+1. **Optional**: Add a mapping for `:SMLTypeQuery`
+
+        augroup smlMaps
+          au!
+          au FileType sml nnoremap <leader>t :SMLTypeQuery<CR>
+        augroup END
+
+    Then just press `<leader>t`.
+
+### Caveats
+
+- **This only works with MLton.** If you are using another compiler, like SML/NJ,
+  you will have to set up your project to build with MLton. In most cases, it's
+  possible for them to co-exist.
+
+  Refer to the documentation for MLBasis files (similar to CM files used by
+  SML/NJ).
+
+  - <http://mlton.org/MLBasisExamples>
+  - <http://mlton.org/MLBasis>
+
+- **You are responsible** for building the `.du` file. See "Generating `.du`
+  Files" for how to do this.
+
+- MLton takes a noticeable amount of time to compile even small projects. This
+  is unavoidable.
+
+### Generating `.du` Files
+
+From [MLton](http://mlton.org/EmacsDefUseMode#_usage):
+
+To use def-use mode one typically first sets up the program’s makefile or build
+script so that the def-use information is saved each time the program is
+compiled. In addition to the `-show-def-use file` option, the `-prefer-abs-paths
+true` expert option is required. Note that the time it takes to save the
+information is small (compared to type-checking), so it is recommended to simply
+add the options to the MLton invocation that compiles the program. However, it
+is only necessary to type check the program (or library), so one can specify the
+`-stop tc` option. For example, suppose you have a program defined by an MLB
+file named `my-prg.mlb`, you can save the def-use information to the file
+`my-prg.du` by invoking MLton as:
+
+```
+mlton -prefer-abs-paths true -show-def-use my-prg.du -stop tc my-prg.mlb
+```
+
+It's important that the filename be given a `.du` extension.
 
 ## Configuration
 
