@@ -59,7 +59,7 @@ function! bettersml#typequery#TypeQuery() abort
 
   " Use a bash oneliner to search in the use-def file
   let l:symuse = fnameescape(l:symfile).' '.l:symlinecol
-  let l:symdef = system('fgrep -A1 "'.l:symuse.'" '.l:udf.' | tail -n +2')
+  let l:symdef = system('fgrep -w -A1 "'.l:symuse.'" '.l:udf.' | head -n 2 | tail -n +2')
 
   if l:symdef ==# ''
     if getftime(expand('%')) > getftime(l:udf)
