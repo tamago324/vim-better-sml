@@ -4,6 +4,12 @@
 " Created: 19 Mar 2017
 " License: MIT License
 
+let s:scriptroot = fnamemodify(resolve(expand('<sfile>:p')), ':h:h:h')
+
+function! bettersml#util#GetDefUseUtil() abort
+  return s:scriptroot.'/bin/def-use-util'
+endfunction
+
 " Start in directory a:where and walk up the parent folders until it finds a
 " file matching a:what; return path to that file
 " Credit: vim-syntastic
@@ -36,4 +42,9 @@ function! bettersml#util#findGlobInParent(what, where) abort
 
     return ''
 endfunction
+
+function! bettersml#util#LoadDefUse() abort
+  return bettersml#util#findGlobInParent('*.du', expand('%:p:h', 1))
+endfunction
+
 

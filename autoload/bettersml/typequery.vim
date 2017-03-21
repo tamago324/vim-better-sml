@@ -5,19 +5,16 @@
 " License: MIT License
 "
 
-let s:scriptroot = fnamemodify(resolve(expand('<sfile>:p')), ':h:h:h')
-
 " Ensure that the *.ud file is up-to-date
 " We need this file so that we can grep in it to do the type query
 function! bettersml#typequery#LoadUseDef() abort
-  let invertDefUse = s:scriptroot.'/invert-def-use'
-
-  if !executable(l:invertDefUse)
-    echom "'invert-def-use' needs to be compiled first.  :help vim-better-sml-def-use"
+  let defUseUtil = bettersml#util#GetUseUtil()
+  if !executable(l:defUseUtil)
+    echom "Have you built the support files?  :help vim-better-sml-def-use"
     return ''
   endif
 
-  let duf = bettersml#util#findGlobInParent('*.du', expand('%:p:h', 1))
+  let duf = bettersml#util#LoadDefUse()
 
   " duf doesn't exist; ask user to build
   if l:duf ==# ''
@@ -27,15 +24,9 @@ function! bettersml#typequery#LoadUseDef() abort
 
   let udf = fnamemodify(l:duf, ':r').'.ud'
 
-  " udf doesn't exist; compile it
-  if filereadable(l:udf)
-    call system(l:invertDefUse.' '.l:duf.' > '.l:udf)
-    return l:udf
-  endif
-
-  " udf exists, but is it current?
-  if getftime(l:duf) > getftime(l:udf)
-    call system(l:invertDefUse.' '.l:duf.' > '.l:udf)
+  " udf doesn't exist or out of date
+  if filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
+    call system(l:defUseUtil.' invert '.l:duf.' > '.l:udf)
   endif
 
   return l:udf
