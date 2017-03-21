@@ -3,3 +3,7 @@ tags
 invert-def-use
 sample/*.du
 sample/*.ud
+support/*.du
+support/*.ud
+bin
+.cm
