@@ -21,7 +21,7 @@ struct
       if String.isPrefix limitTo filename
       then
         String.concatWith " "
-          [ "Warning:", filename, linecol, "\n ", idType, id, "is unused.\n" ]
+          [ "Warning:", filename, linecol, idType, id, "is unused\n" ]
       else ""
     end
 

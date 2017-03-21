@@ -13,6 +13,32 @@ let g:loaded_syntastic_sml_mlton_unused_checker = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
+if !exists('g:sml_show_all_unused_warnings')
+  let g:sml_show_all_unused_warnings = 0
+endif
+
+if !exists('g:sml_show_all_unused_warnings')
+  let g:sml_show_all_unused_warnings = 0
+endif
+
+if !exists('g:sml_hide_cmlib_unused_warnings')
+  let g:sml_hide_cmlib_unused_warnings = 0
+endif
+
+function! BetterSMLFilterUnused(err_lines) abort
+  let result = a:err_lines
+  if !g:sml_show_all_unused_warnings
+    let currentFile = resolve(expand('%:p'))
+    let result = filter(l:result, 'v:val =~? l:currentFile')
+  endif
+
+  if g:sml_hide_cmlib_unused_warnings
+    let result = filter(l:result, 'v:val !~? "cmlib"')
+  endif
+
+  return l:result
+endfunction
+
 function! SyntaxCheckers_sml_unused_IsAvailable() dict abort
   return executable(self.getExec())
         \ && filereadable(bettersml#util#LoadDefUse())
@@ -26,11 +52,13 @@ function! SyntaxCheckers_sml_unused_GetLocList() dict abort
         \ 'args': 'unused ' . syntastic#util#shescape(l:duf),
         \ 'fname': '' })
 
-  let errorformat  = '%WWarning: %f %l\.%c ,%Z%m'
+  let errorformat  = '%tarning: %f %l\.%c %m'
 
   return SyntasticMake({
+        \ 'Preprocess': 'BetterSMLFilterUnused',
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat })
+
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
