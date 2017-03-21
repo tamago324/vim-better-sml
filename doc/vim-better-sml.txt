@@ -17,6 +17,7 @@ CONTENTS                                            *vim-better-sml-contents*
        3.1. Concealing ....................... |vim-better-sml-conceal|
        3.2. Custom Mappings .................. |vim-better-sml-mappings|
        3.3. Filetypes ........................ |vim-better-sml-filetypes|
+       3.4. Show all unused warnings ......... |vim-better-sml-unused-warns|
     5. License & Contributing ................ |vim-better-sml-license|
     6. Credits ............................... |vim-better-sml-credits|
 
@@ -118,6 +119,7 @@ External Plugins~
 - Syntastic
   - For the SML/NJ checker, automatically detects and uses a CM file.
   - (Previously, it only worked on single files.)
+  - Registers a plugin to warn about unused variables
 
 
 =============================================================================
@@ -138,6 +140,15 @@ USAGE                                                  *vim-better-sml-usage*
 
   You may want to set up a mapping for this. See |vim-better-sml-mappings|.
 
+- Warn for unused variables
+  - Install Syntastic
+    - Be sure to check out the recommended settings: |syntastic-recommended|.
+  - Follow the setup for def-use information: |vim-better-sml-def-use|.
+  - Add this line to your vimrc:
+>
+    let g:syntastic_sml_checkers = ["smlnj", "unused"]
+<
+  - Open an SML file, and save it.
 
 -----------------------------------------------------------------------------
 Setting Up Def-Use Information~
@@ -238,6 +249,25 @@ This may not be what you want. To override this, you have a couple options:
       au BufRead,BufNewFile *.md setlocal filetype=my-other-lex-filetype
 <
 
+-----------------------------------------------------------------------------
+Show all unused warnings~
+                                                *vim-better-sml-unused-warns*
+
+Generally, there are a lot of unused warnings. To only show those for the
+current file:
+Default: 0
+>
+  let g:sml_show_all_unused_warnings = 1
+<
+
+A lot of the time the warnings come from cmlib. To hide unused identifier
+warnings from cmlib specifically:
+Default: 0
+>
+  let g:sml_hide_cmlib_unused_warnings = 1
+<
+This setting really only makes sense if with
+`g:sml_show_all_unused_warnings = 1.`
 
 =============================================================================
 LICENSE AND CONTRIBUTING                               *vim-better-sml-license*

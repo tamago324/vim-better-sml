@@ -24,6 +24,7 @@ will get you up to speed.
 - Semantic Information
   - Look up type of identifier under cursor (`:SMLTypeQuery`)
   - Show type errors in sign column
+  - Warn about unused variables
 - Syntax
   - Various corrections to default syntax highlighting
   - Conceal characters (`'a` to `α`, `fn` to `λ.`)
@@ -48,7 +49,8 @@ Complete setup information is available in the help:
 
 > [**`:help vim-better-sml`**](doc/vim-better-sml.txt).
 
-Note: type introspection (`:SMLTypeQuery`) requires that MLton is installed.
+Note: type introspection (`:SMLTypeQuery`) and unused variables requires that
+MLton is installed. Unused variables and type error reporting require Syntastic.
 
 ## Configuration
 
@@ -57,11 +59,9 @@ A few settings are configurable. See `:help vim-better-sml-config`.
 ## Future Features
 
 - [ ] Jump to definition
-- [ ] Highlight all uses and definition
-- [ ] Highlight unused definitions
-  - Might want to do as a CLI tool
-  - This way it could with with Syntastic to show markers in sign column
+- [ ] Highlight all uses for a definition
 - [ ] Handle non-standard mlton name/location
+- [ ] Make it easier to get started porting CM to MLBasis
 
 ## License
 
