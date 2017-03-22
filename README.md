@@ -23,6 +23,7 @@ will get you up to speed.
 
 - Semantic Information
   - Look up type of identifier under cursor (`:SMLTypeQuery`)
+  - Jump to definition of identifier under cursor (`:SMLJumpToDef`)
   - Show type errors in sign column
   - Warn about unused variables
 - Syntax

@@ -35,13 +35,12 @@ https://raw.githubusercontent.com/jez/vim-better-sml/master/sample/example.png
 Semantic Information~
                                                     *vim-better-sml-semantic*
 
-- Look up type of identifier under cursor
-  - Setup required. See |vim-better-sml-def-use|.
-  - Configurable.   See |vim-better-sml-mappings|.
-
 - Show type errors in sign column
-  - Setup required. See |vim-better-sml-usage|.
+- Show unused variables in the sign column
+- Look up type of identifier under cursor
+- Jump to definition of variable under cursor
 
+All of these require setup. See |vim-better-sml-usage|.
 
 -----------------------------------------------------------------------------
 Syntax~
