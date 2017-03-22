@@ -1,22 +1,22 @@
-def1
-def1
-    use1
-def1
-    use2
-def1
-    use3
-def1
-def2
-def2
-    use4
-def2
-    use5
-def2
-def3
-def3
-def4
-def4
-    use6
-def4
-def5
-def5
+variable def1 /filename/foo.sml 1.1
+variable def1 /filename/foo.sml 1.1
+    /filename/foo.sml 2.1
+variable def1 /filename/foo.sml 1.1
+    /filename/foo.sml 3.1
+variable def1 /filename/foo.sml 1.1
+    /filename/foo.sml 4.1
+variable def1 /filename/foo.sml 1.1
+variable def2 /filename/foo.sml 5.1
+variable def2 /filename/foo.sml 5.1
+    /filename/foo.sml 6.1
+variable def2 /filename/foo.sml 5.1
+    /filename/foo.sml 7.1
+variable def2 /filename/foo.sml 5.1
+variable def3 /filename/foo.sml 8.1
+variable def3 /filename/foo.sml 8.1
+variable def4 /filename/foo.sml 9.1
+variable def4 /filename/foo.sml 9.1
+    /filename/foo.sml 10.1
+variable def4 /filename/foo.sml 9.1
+variable def5 /filename/foo.sml 11.1
+variable def5 /filename/foo.sml 11.1
