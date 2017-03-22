@@ -59,8 +59,12 @@ A few settings are configurable. See `:help vim-better-sml-config`.
 ## Future Features
 
 - [ ] Highlight all uses for a definition
+  - Can probably do this with a quickfix window (think: vim-grepper)
 - [ ] Handle non-standard mlton name/location
 - [ ] Make it easier to get started porting CM to MLBasis
+- [ ] Highlight all functions similar to vim-easytags
+  - Might get this for free if we generate a tags file from the def-use
+    information
 
 ## License
 
