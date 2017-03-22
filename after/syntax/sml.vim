@@ -111,7 +111,8 @@ syn keyword  smlKeyword  exception handle
 syn keyword  smlKeyword  in infix infixl infixr
 syn keyword  smlKeyword  match nonfix of orelse
 syn keyword  smlKeyword  raise handle type
-syn keyword  smlKeyword  val where while with withtype
+" ... and also this line: "rec" is a keyword
+syn keyword  smlKeyword  val rec where while with withtype
 
 " Finally, define fn with a 'match' not a 'keyword' for the 'contains='
 syn match smlFunction "\<fn\>" contains=smlFnLam,smlFnDot
