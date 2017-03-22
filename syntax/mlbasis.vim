@@ -39,7 +39,7 @@ let b:current_syntax = 'mlbasis'
 syn keyword mlbasisKeyword and ann basis functor end in local let open structure signature
 hi link mlbasisKeyword Keyword
 
-syn match mlbasisPath ".\+\.\(fun\|mlb\|sig\|sml\)" contains=mlbasisPathMapping
+syn match mlbasisPath "\<.\+\.\(fun\|mlb\|sig\|sml\)" contains=mlbasisPathMapping
 hi link mlbasisPath Identifier
 
 syn match mlbasisPathMapping "\$([A-Za-z_]\+)"
