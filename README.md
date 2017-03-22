@@ -58,7 +58,6 @@ A few settings are configurable. See `:help vim-better-sml-config`.
 
 ## Future Features
 
-- [ ] Jump to definition
 - [ ] Highlight all uses for a definition
 - [ ] Handle non-standard mlton name/location
 - [ ] Make it easier to get started porting CM to MLBasis

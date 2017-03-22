@@ -1,11 +1,15 @@
-" Query expression type information from Vim
+" Jump to symbol definition
 "
 " Maintainer: Jake Zimmerman <jake@zimmerman.io>
-" Created: 19 Mar 2017
+" Created: 21 Mar 2017
 " License: MIT License
 "
 
-function! bettersml#typequery#TypeQuery() abort
+if !exists('g:sml_jump_to_def_new_tab')
+  let g:sml_jump_to_def_new_tab = 0
+endif
+
+function! bettersml#jumptodef#JumpToDef() abort
   " Need to make sure use def is up-to-date to do the type query
   let udf = bettersml#util#LoadUseDef()
   if l:udf ==# ''
@@ -35,14 +39,18 @@ function! bettersml#typequery#TypeQuery() abort
 
   let parsed = split(l:symdef)
 
-  if l:parsed[0] ==# 'variable' ||
-        \ l:parsed[0] ==# 'constructor' ||
-        \ l:parsed[0] ==# 'exception'
-    let quoted = join(l:parsed[4:])
-    let unquoted = strpart(l:quoted, 1, len(l:quoted) - 2)
-    echom l:unquoted
+  let identType = parsed[0]
+  let ident = parsed[1]
+  let identFile = parsed[2]
+  let identLineCol = split(parsed[3], '\.')
+  let identLine = identLineCol[0]
+  let identCol = identLineCol[1]
+
+  if g:sml_jump_to_def_new_tab
+    exe 'tabnew +'.l:identLine.' '.l:identFile
   else
-    echom l:parsed[0]
+    exe 'edit +'.l:identLine.' '.l:identFile
   endif
+  call cursor(0, identCol)
 endfunction
 

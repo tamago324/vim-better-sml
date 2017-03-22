@@ -47,4 +47,35 @@ function! bettersml#util#LoadDefUse() abort
   return bettersml#util#findGlobInParent('*.du', expand('%:p:h', 1))
 endfunction
 
+" Ensure that the *.ud file is up-to-date
+function! bettersml#util#LoadUseDef() abort
+  let defUseUtil = bettersml#util#GetDefUseUtil()
+  if !executable(l:defUseUtil)
+    echom "Have you built the support files?  :help vim-better-sml-def-use"
+    return ''
+  endif
 
+  let duf = bettersml#util#LoadDefUse()
+
+  " duf doesn't exist; ask user to build
+  if l:duf ==# ''
+    echom "You need to build a def-use file first.  :help vim-better-sml-def-use"
+    return ''
+  endif
+
+  let udf = fnamemodify(l:duf, ':r').'.ud'
+
+  " udf doesn't exist or out of date
+  if filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
+    call system(l:defUseUtil.' invert '.l:duf.' > '.l:udf)
+  endif
+
+  return l:udf
+endfunction
+
+" Get line number and column in a format suitable
+" for grepping in a def-use or use-def file
+function! bettersml#util#SymLineCol() abort
+  let l:sympos = getpos('.')
+  return l:sympos[1] . '.' . l:sympos[2]
+endfunction

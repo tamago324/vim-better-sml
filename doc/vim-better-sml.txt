@@ -140,6 +140,13 @@ USAGE                                                  *vim-better-sml-usage*
 
   You may want to set up a mapping for this. See |vim-better-sml-mappings|.
 
+- *:SMLJumpToDef*
+
+  Once you've followed the setup (|vim-better-sml-def-use|),
+  place your cursor on an identifier, and run |:SMLJumpToDef|.
+
+  You may want to set up a mapping for this. See |vim-better-sml-mappings|.
+
 - Warn for unused variables
   - Install Syntastic
     - Be sure to check out the recommended settings: |syntastic-recommended|.
@@ -154,7 +161,8 @@ USAGE                                                  *vim-better-sml-usage*
 Setting Up Def-Use Information~
                                                      *vim-better-sml-def-use*
 
-There is a bit of setup involved before you can use |:SMLTypeQuery|.
+There is a bit of setup involved before you can use most language-aware
+features, like type queries, unused variables, and jump-to-definition.
 
 1. Install `mlton`. MLton is an SML compiler (and a really nice one at that!)
   - http://mlton.org/Installation
@@ -228,6 +236,7 @@ convenience:
     augroup smlMaps
       au!
       au Filetype sml nnoremap <leader>t :SMLTypeQuery<CR>
+      au Filetype sml nnoremap gd :SMLJumpToDef<CR>
     augroup END
 <
 

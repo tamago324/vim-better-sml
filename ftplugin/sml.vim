@@ -19,6 +19,7 @@ setlocal commentstring=(*%s*)
 setlocal formatprg=
 
 command! SMLTypeQuery call bettersml#typequery#TypeQuery()
+command! SMLJumpToDef call bettersml#jumptodef#JumpToDef()
 
 " ----- Raimondi/delimitMate -----
 " Single quotes are part of identifiers, and shouldn't always come in pairs.
