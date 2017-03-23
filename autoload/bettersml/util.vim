@@ -66,7 +66,7 @@ function! bettersml#util#LoadUseDef() abort
   let udf = fnamemodify(l:duf, ':r').'.ud'
 
   " udf doesn't exist or out of date
-  if filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
+  if !filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
     call system(l:defUseUtil.' invert '.l:duf.' > '.l:udf)
   endif
 
