@@ -207,6 +207,11 @@ Caveats~
 
 - MLton has somewhat long compilation times. This is unavoidable.
 
+- There is a known issue in MLton that interferes with def-use information for
+  files using DOS-style line endings (`\r\n`).
+  See https://github.com/MLton/mlton/issues/170 for a description and
+  workarounds.
+
 
 =============================================================================
 CONFIGURATION                                         *vim-better-sml-config*
