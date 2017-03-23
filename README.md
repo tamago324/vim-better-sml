@@ -29,7 +29,7 @@ will get you up to speed.
 - Syntax
   - Various corrections to default syntax highlighting
   - Conceal characters (`'a` to `α`, `fn` to `λ.`)
-  - Highlighting for `*.sig`, `*.cm`, `*.mlb`, `*.lex`, `*.grm`, and
+  - Highlighting for `*.sig`, `*.fun`, `*.cm`, `*.mlb`, `*.lex`, `*.grm`, and
     `*.smackspec` files
 - Indentation
   - Better `let ... in ... end` indentation

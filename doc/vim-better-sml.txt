@@ -61,6 +61,7 @@ Syntax~
   -  Extension  |  Filetype
     ------------|-----------
     `*.sig`       | signatures
+    `*.fun`       | functors
     `*.lex`       | ML-Lex
     `*.grm`       | ML-Yacc
     `*.smackspec` | Smackage
