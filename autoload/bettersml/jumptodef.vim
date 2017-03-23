@@ -25,7 +25,7 @@ function! bettersml#jumptodef#JumpToDef() abort
 
   " Use a bash oneliner to search in the use-def file
   let l:symloc = fnameescape(l:symfile).' '.l:symlinecol
-  let l:symdef = system('fgrep -w -A1 "'.l:symloc.'" '.l:udf.' | head -n 2 | tail -n +2')
+  let l:symdef = system('grep -w -A1 "'.l:symloc.'" '.l:udf.' | head -n 2 | tail -n +2')
 
   if l:symdef ==# ''
     if getftime(expand('%')) > getftime(l:udf)
