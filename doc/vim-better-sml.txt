@@ -48,8 +48,10 @@ Syntax~
 
 - Various corrections to default syntax highlighting
   - Highlight `=>` correctly
-  - Highlight `fun` and `fn` with `Function`.
-  - Highlight type variables (i.e., `'a`) with `Type`.
+  - Highlight `fun` and `fn` with `Function`
+  - Highlight `rec` and `as` keywords
+  - Highlight type variables (i.e., `'a`) with `Type`
+  - Highlight projections (`#1`, `#foo`, etc.)
 
 - Provide conceal characters.
   - `'a` becomes `α`.
