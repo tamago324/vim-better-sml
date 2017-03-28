@@ -131,6 +131,8 @@ syn keyword smlLCIdentifier o conceal cchar=∘
 " Highlight '$' (function application) like functions
 syn match smlFunction "\<\$\>"
 
+" Highlight '#' projections (like '#1' or '#foo') as functions
+syn match smlFunction "\<#\w\+\>"
 
 " Color fun and fn as Function
 hi def link smlFunction Function

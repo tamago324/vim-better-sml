@@ -9,6 +9,8 @@
 setlocal iskeyword+='
 " '$' is valid as or in a variable name
 setlocal iskeyword+=$
+" '#' is valid in projections (like #1 or #foo)
+setlocal iskeyword+=#
 
 " Set comment string so things like vim-commentary and foldmethod can use them
 " appropriately.
