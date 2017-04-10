@@ -175,6 +175,12 @@ features, like type queries, unused variables, and jump-to-definition.
        `cd ~/.vim/bundle/vim-better-sml`
        `make`
 
+    Alternatively, if you have MLton installed in a different location, or
+    with a different name, set the MLTON variable appropriately like this:
+
+       `cd ~/.vim/bundle/vim-better-sml`
+       `make MLTON=my-custom-mlton`
+
 3. Configure your SML project to output `.du` files. From MLton:
 
   To use def-use mode, one typically first sets up the program’s makefile or
