@@ -94,6 +94,10 @@ Indentation~
       `|)`               |   `|)`
   - (Cursor location denoted by `|`)
 
+- Many other small improvements. The indenter is getting better all the time.
+  If you have a suggestion to make it better, please open an issue!
+
+  Be very explicit about what the actual and expected indentation are.
 
 -----------------------------------------------------------------------------
 Filetype~
