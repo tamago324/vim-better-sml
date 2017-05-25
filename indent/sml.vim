@@ -215,8 +215,8 @@ function! GetSMLIndent()
     call search('\<case\>',"bW")
     let ind = col(".")+1
 
-  " Indent if last line starts with 'fun', 'case', 'fn'
-  elseif lline =~ '^\s*\(fun\|fn\|case\)\>'
+  " Indent if last line starts with 'fun', 'case', 'fn', 'and'
+  elseif lline =~ '^\s*\(fun\|fn\|case\|and\)\>'
     let ind = ind + &sw
   endif
 
