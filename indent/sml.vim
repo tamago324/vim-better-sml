@@ -113,9 +113,12 @@ function! GetSMLIndent()
   let ind = indent(lnum)
   let lline = getline(lnum)
 
-  " Return double 'shiftwidth' after lines matching:
   if lline =~ '^\s*|.*=>\s*$'
-    return ind + &sw + &sw
+    " | <TAB>
+    return ind + 2 + &sw
+  elseif lline =~ '^\s*of.*=>\s*$'
+    " of <TAB>
+    return ind + 3 + &sw
   elseif lline =~ '^\s*val\>.*=\s*$'
     return ind + &sw
   endif
