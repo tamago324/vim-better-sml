@@ -18,6 +18,7 @@ CONTENTS                                            *vim-better-sml-contents*
        3.2. Custom Mappings .................. |vim-better-sml-mappings|
        3.3. Filetypes ........................ |vim-better-sml-filetypes|
        3.4. Show all unused warnings ......... |vim-better-sml-unused-warns|
+       3.5. Custom SML/NJ settings ........... |vim-better-sml-smlnj|
     5. License & Contributing ................ |vim-better-sml-license|
     6. Credits ............................... |vim-better-sml-credits|
 
@@ -295,8 +296,23 @@ Default: 0
 This setting really only makes sense if with
 `g:sml_show_all_unused_warnings = 1.`
 
+-----------------------------------------------------------------------------
+Custom SML/NJ settings~
+                                                       *vim-better-sml-smlnj*
+
+This feature is actually completely independent of whether you're using
+vim-better-sml. It applies if you're using Syntastic with SML/NJ.
+
+Sometimes, you may want to pass specific compiler flags to the SML/NJ checker.
+For example, to ask SML/NJ to be quite about calling polyequal, add this to
+your vimrc:
+>
+    let g:syntastic_sml_smlnj_args = '-Ccompiler.poly-eq-warn=false'
+<
+For more information, see the Syntastic docs: |syntastic-config-makeprg|.
+
 =============================================================================
-LICENSE AND CONTRIBUTING                               *vim-better-sml-license*
+LICENSE AND CONTRIBUTING                             *vim-better-sml-license*
 
 MIT License.
 
