@@ -1,9 +1,0 @@
-$(SML_LIB)/basis/basis.mlb
-
-util.sml
-
-invert-def-use.sml
-unused-defs.sml
-
-main.sml
-call-main.sml

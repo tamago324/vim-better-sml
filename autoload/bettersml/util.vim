@@ -6,8 +6,8 @@
 
 let s:scriptroot = fnamemodify(resolve(expand('<sfile>:p')), ':h:h:h')
 
-function! bettersml#util#GetDefUseUtil() abort
-  return s:scriptroot.'/bin/def-use-util'
+function! bettersml#util#GetVbsUtil() abort
+  return s:scriptroot.'/bin/vbs-util'
 endfunction
 
 " Start in directory a:where and walk up the parent folders until it finds a
@@ -49,8 +49,8 @@ endfunction
 
 " Ensure that the *.ud file is up-to-date
 function! bettersml#util#LoadUseDef() abort
-  let defUseUtil = bettersml#util#GetDefUseUtil()
-  if !executable(l:defUseUtil)
+  let vbsUtil = bettersml#util#GetVbsUtil()
+  if !executable(l:vbsUtil)
     echom "Have you built the support files?  :help vim-better-sml-def-use"
     return ''
   endif
@@ -67,7 +67,7 @@ function! bettersml#util#LoadUseDef() abort
 
   " udf doesn't exist or out of date
   if !filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
-    call system(l:defUseUtil.' invert '.l:duf.' > '.l:udf)
+    call system(l:vbsUtil.' invert '.l:duf.' > '.l:udf)
   endif
 
   return l:udf
@@ -78,4 +78,40 @@ endfunction
 function! bettersml#util#SymLineCol() abort
   let l:sympos = getpos('.')
   return l:sympos[1] . '.' . l:sympos[2]
+endfunction
+
+function! bettersml#util#LoadConfig() abort
+  " TODO(jez) We're hard-coding 'sml.json'.
+  " Can we assume this will always be the config file name?
+  return bettersml#util#findGlobInParent('sml.json', expand('%:p:h', 1))
+endfunction
+
+function! bettersml#util#GetCmFilePattern()
+  let l:configFile = bettersml#util#LoadConfig()
+
+  if l:configFile ==# ''
+    return '*.cm'
+  else
+    let l:vbsUtil = bettersml#util#GetVbsUtil()
+
+    if !executable(l:vbsUtil)
+      echom "Detected an sml.json file, but the support files aren't executable."
+      return '*.cm'
+    else
+      " Use systemlist(...)[0] to avoid trailing newlines
+      let l:result = systemlist(l:vbsUtil.' config '.l:configFile.' cm.make/onSave')[0]
+
+      if v:shell_error
+        echom l:result
+        return '*.cm'
+      else
+        return l:result
+      endif
+    endif
+  endif
+endfunction
+
+function! bettersml#util#GetCmFileOrEmpty()
+  let l:cmPattern = bettersml#util#GetCmFilePattern()
+  return bettersml#util#findGlobInParent(l:cmPattern, expand('%:p:h', 1))
 endfunction
