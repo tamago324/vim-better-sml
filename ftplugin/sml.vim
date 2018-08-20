@@ -20,8 +20,17 @@ setlocal commentstring=(*%s*)
 " To fight back, we explicitly turn off the formatprg here.
 setlocal formatprg=
 
-command! SMLTypeQuery call bettersml#typequery#TypeQuery()
-command! SMLJumpToDef call bettersml#jumptodef#JumpToDef()
+command! -nargs=0 SMLTypeQuery call bettersml#typequery#TypeQuery()
+command! -nargs=0 SMLJumpToDef call bettersml#jumptodef#JumpToDef()
+
+command! -nargs=0 SMLReplStart call bettersml#repl#ReplStart()
+command! -nargs=0 SMLReplStop call bettersml#repl#ReplStop()
+command! -nargs=0 SMLReplUse call bettersml#repl#ReplUse()
+command! -nargs=0 SMLReplBuild call bettersml#repl#ReplBuild()
+command! -nargs=0 SMLReplClear call bettersml#repl#ReplClear()
+command! -nargs=0 SMLReplOpen call bettersml#repl#ReplOpen()
+command! -nargs=? SMLReplPrintDepth call bettersml#repl#ReplPrintDepth(<f-args>)
+
 
 " ----- Raimondi/delimitMate -----
 " Single quotes are part of identifiers, and shouldn't always come in pairs.
