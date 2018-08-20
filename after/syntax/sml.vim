@@ -37,6 +37,8 @@ syn keyword  smlTodo contained NOTE Note
 " Highlight type variables (i.e., tokens that look like 'xyz).
 syn match smlType "\<'\w\+\>" contains=smlGreekTyvar
 
+syn match smlComment /(\*).*$/ contains=smlTodo
+
 " Add conceal characters for common Greek letters
 " that are used for type variables.
 hi def link smlGreekTyvar smlType
