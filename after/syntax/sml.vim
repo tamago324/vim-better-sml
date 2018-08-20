@@ -21,6 +21,8 @@
 "   to your vimrc.
 "
 
+scriptencoding utf-8
+
 " Initialize settings (just for consistency)
 if !exists('g:sml_greek_tyvar_show_tick')
     let g:sml_greek_tyvar_show_tick = 0
@@ -100,7 +102,7 @@ call s:ConcealTyvar('omega', 'ω')
 syn clear smlKeyword
 
 " These are copy/pasted from $VIMRUNTIME/syntax/sml.vim ...
-if exists("sml_noend_error")
+if exists('sml_noend_error')
   syn match    smlKeyword    "\<end\>"
 endif
 syn region   smlKeyword start="\<signature\>" matchgroup=smlModule end="\<\w\(\w\|'\)*\>" contains=smlComment skipwhite skipempty nextgroup=smlMTDef
