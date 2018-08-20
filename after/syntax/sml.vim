@@ -115,8 +115,9 @@ syn keyword  smlKeyword  exception handle
 syn keyword  smlKeyword  in infix infixl infixr
 syn keyword  smlKeyword  match nonfix of orelse
 syn keyword  smlKeyword  raise handle type
-" ... and also this line: "rec" and "as" are keywords
-syn keyword  smlKeyword  val rec as where while with withtype
+" ... and also this line: "rec", "lazy", and "as" are keywords
+" (lazy is only truly a keyword in SML/NJ with 'Control.lazysml := true')
+syn keyword  smlKeyword  val rec lazy as where while with withtype
 
 " Finally, define fn with a 'match' not a 'keyword' for the 'contains='
 syn match smlFunction "\<fn\>" contains=smlFnLam,smlFnDot
