@@ -183,3 +183,48 @@ function! bettersml#process#SendCommand(command) abort
   endif
 endfunction
 
+" Callback used with the exit handler for BuildVbsUtil
+function! bettersml#process#FinishBuildVbsUtil(job_id, rc, ...) abort dict
+  " There's an extra arg Neovim passes us, but we don't need it.
+  if a:rc ==# 0
+    echom 'Support files have been compiled. Re-run whatever command you were trying to run.'
+  else
+    call bettersml#Error('Failed to compile support files. See :help vim-better-sml-def-use for manual instructions.')
+  endif
+  silent! unlet s:make_job_id
+endfunction
+
+" Builds the support files from source on demand
+function! bettersml#process#BuildVbsUtil() abort
+  call bettersml#Enforce(bettersml#check#Mlton(g:sml_mlton_executable))
+  call bettersml#Enforce(bettersml#process#CheckJobStart())
+
+  if exists('s:make_job_id')
+    echom 'Support files are already compiling. Please wait for them to finish.'
+    return
+  endif
+
+  echom 'Compiling support files in the background...'
+
+  let l:args = [
+        \ 'MLTON='.shellescape(g:sml_mlton_executable),
+        \ 'make',
+        \ ]
+  let l:command = join(l:args)
+
+  if exists('*jobstart')
+    " Neovim
+    let s:make_job_id = jobstart(l:command, {
+          \ 'cwd': bettersml#ScriptRoot(),
+          \ 'on_exit': 'bettersml#process#FinishBuildVbsUtil'
+          \ })
+  elseif exists('*job_start')
+    " Vim 8
+    execute 'cd' fnameescape(bettersml#ScriptRoot())
+    let s:make_job_id = job_start(['/bin/sh', '-c', l:command], {
+          \ 'exit_cb': 'bettersml#process#FinishBuildVbsUtil',
+          \ })
+    cd -
+  endif
+endfunction
+
