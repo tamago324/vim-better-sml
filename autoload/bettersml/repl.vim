@@ -16,41 +16,10 @@
 " g:ale_sml_smlnj_cm_file option, which also has a buffer-local (b:) variant.
 " No sense in duplicating work when most people are going to already use ALE.
 
-" ----- Defaults ------------------------------------------------------------
-
-if exists('g:sml_repl_backend')
-  call bettersml#process#ValidateBackend(g:sml_repl_backend)
-else
-  if exists('*jobstart')
-    let g:sml_repl_backend = 'neovim'
-  elseif exists(':VimuxRunCommand')
-    let g:sml_repl_backend = 'vimux'
-  else
-    let g:sml_repl_backend = '[default]'
-  endif
-endif
-
-if !exists('g:sml_repl_command')
-  if executable('rlwrap')
-    let g:sml_repl_command = 'rlwrap sml'
-  else
-    let g:sml_repl_command = 'sml'
-  endif
-endif
-
-if !exists('g:sml_repl_options')
-  let g:sml_repl_options = ''
-endif
-
 " ----- REPL commands -------------------------------------------------------
 
 function! bettersml#repl#ReplStart() abort
-  if !exists('g:loaded_ale')
-    echohl Error
-    echomsg 'The :SMLRepl* functions require w0rp/ale to be installed.'
-    echohl None
-    return
-  endif
+  call bettersml#Enforce(bettersml#check#Ale())
 
   let l:buffer = bufnr('%')
   let l:cmfile = ale#handlers#sml#GetCmFile(l:buffer)
@@ -96,7 +65,7 @@ function! bettersml#repl#ReplOpen() abort
   let l:line = search(l:regex, 'cnbW')
   if l:line == 0
     " No result
-    echo 'Could not infer current structure. Is your cursor in a structure?'
+    echom 'Could not infer current structure. Is your cursor in a structure?'
     return
   endif
 

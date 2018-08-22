@@ -4,10 +4,16 @@
 " Created: 19 Mar 2017
 " License: MIT License
 
-let s:scriptroot = fnamemodify(resolve(expand('<sfile>:p')), ':h:h:h')
-
 function! bettersml#util#GetVbsUtil() abort
-  return s:scriptroot.'/bin/vbs-util'
+  let l:vbs_util = bettersml#ScriptRoot().'/bin/vbs-util'
+  let [l:severity, l:msg, l:suggestions] = bettersml#check#Support(l:vbs_util)
+  if l:severity ==# 'error'
+    call bettersml#process#BuildVbsUtil()
+    " Builds support files asynchronously. For now, return ''
+    return ''
+  else
+    return l:vbs_util
+  endif
 endfunction
 
 " Start in directory a:where and walk up the parent folders until it finds a
@@ -94,7 +100,10 @@ function! bettersml#util#GetCmFilePattern()
   else
     let l:vbsUtil = bettersml#util#GetVbsUtil()
 
-    if !executable(l:vbsUtil)
+    if l:vbsUtil ==# ''
+      echom 'Detected an sml.json file, but the support are still building.'
+      return '*.cm'
+    elseif !executable(l:vbsUtil)
       echom "Detected an sml.json file, but the support files aren't executable."
       return '*.cm'
     else
@@ -111,7 +120,7 @@ function! bettersml#util#GetCmFilePattern()
   endif
 endfunction
 
-function! bettersml#util#GetCmFileOrEmpty()
+function! bettersml#util#GetCmFileOrEmpty() abort
   let l:cmPattern = bettersml#util#GetCmFilePattern()
   return bettersml#util#findGlobInParent(l:cmPattern, expand('%:p:h', 1))
 endfunction

@@ -21,38 +21,92 @@
 " If in the future you're considering invalidating any of these points,
 " consider studying the intero-neovim codebase as a frame of reference.
 
-function! bettersml#process#ValidateBackend(backend) abort
+" ----- Defaults ------------------------------------------------------------
+
+if !exists('g:sml_repl_backend')
+  if exists('*jobstart')
+    let g:sml_repl_backend = 'neovim'
+  elseif exists('$TMUX') && exists(':VimuxRunCommand')
+    let g:sml_repl_backend = 'vimux'
+  else
+    let g:sml_repl_backend = ''
+  endif
+endif
+
+if !exists('g:sml_smlnj_executable')
+  let g:sml_smlnj_executable = 'sml'
+endif
+
+if !exists('g:sml_repl_options')
+  let g:sml_repl_options = ''
+endif
+
+if !exists('g:sml_mlton_executable')
+  let g:sml_mlton_executable = 'mlton'
+endif
+
+" ----- Sanity checks -------------------------------------------------------
+
+function! bettersml#process#CheckBackend(backend) abort
   let l:backends = {
         \ 'neovim': 1,
         \ 'vimux': 1,
         \ }
   if !has_key(l:backends, a:backend)
-    let l:keys = join(keys(l:backends), ', ')
-
-    echohl Error
-    if a:backend ==# '[default]'
-      echomsg 'No REPL backend available. See :help vim-better-sml-repl to learn more.'
+    if a:backend ==# ''
+      return [
+      \   'error',
+      \   'No REPL backend available.',
+      \   [
+      \     'To use the SML/NJ REPL, you must either be using Neovim',
+      \     'or be using tmux and have benmills/vimux installed.',
+      \   ]
+      \ ]
     else
-      echomsg 'Invalid REPL backend: '.g:sml_repl_backend.'. Valid backends: '.l:keys
+      return [
+      \   'error',
+      \   "Invalid REPL backend: '".g:sml_repl_backend."'.",
+      \   ['Valid backends: '.join(keys(l:backends), ', ')]
+      \ ]
     endif
-    echohl None
+  else
+    return ['ok', 'REPL backend is available and valid: '.a:backend, []]
   endif
 endfunction
 
-" Creates a new buffer for the SML/NJ repl, using a:command.
+function! bettersml#process#CheckJobStart() abort
+  if !exists('*jobstart') && !exists('*job_start')
+    return [
+    \   'error',
+    \   'Asynchronous jobs are not available.',
+    \   [
+    \     'Async jobs are required to launch certain background tasks,',
+    \     'like using MLton to compile the support files and auto create',
+    \     'def-use indices for type information.',
+    \     'See :help vim-better-sml-def-use for manual setup instructions.',
+    \   ],
+    \ ]
+  else
+    return ['ok', 'Asynchronous jobs are available.', []]
+  endif
+endfunction
+
+" ----- Terminal buffer / pane control --------------------------------------
+
+" Creates a new buffer for the SML/NJ repl
 function! bettersml#process#StartBuffer(options) abort
   if exists('s:repl_buffer_id')
-    echohl Error
-    echomsg 'SML/NJ repl buffer has already been started.'
-    echohl None
+    call bettersml#Error('SML/NJ repl buffer has already been started.')
     return
   endif
 
-  let l:command = join([
-          \ g:sml_repl_command,
-          \ g:sml_repl_options,
-          \ a:options,
-          \ ])
+  call bettersml#Enforce(bettersml#check#Smlnj(g:sml_smlnj_executable))
+
+  let l:args = [g:sml_smlnj_executable, g:sml_repl_options, a:options]
+  if executable('rlwrap')
+    call insert(l:args, 'rlwrap', 0)
+  endif
+  let l:command = join(l:args)
 
   if g:sml_repl_backend ==# 'neovim'
     let l:original_window = winnr()
@@ -83,7 +137,7 @@ function! bettersml#process#StartBuffer(options) abort
     VimuxRunCommand l:command
 
   else
-    call bettersml#process#ValidateBackend(g:sml_repl_backend)
+    call bettersml#Enforce(bettersml#process#CheckBackend(g:sml_repl_backend))
 
   endif
 endfunction
@@ -91,9 +145,7 @@ endfunction
 " Kills the SML/NJ buffer, if it exists
 function! bettersml#process#KillBuffer() abort
   if !exists('s:repl_buffer_id')
-    echohl Error
-    echomsg "SML/NJ repl buffer isn't started or has already been killed."
-    echohl None
+    call bettersml#Error("SML/NJ repl buffer isn't started or has already been killed.")
     silent! unlet s:repl_job_id
     return
   end
@@ -108,17 +160,14 @@ function! bettersml#process#KillBuffer() abort
     silent! unlet s:repl_job_id
     silent! unlet s:repl_buffer_id
   else
-    call bettersml#process#ValidateBackend(g:sml_repl_backend)
+    call bettersml#Enforce(bettersml#process#CheckBackend(g:sml_repl_backend))
   end
 endfunction
-
 
 " Sends a command to the terminal backend.
 function! bettersml#process#SendCommand(command) abort
   if !exists('s:repl_buffer_id')
-      echohl Error
-      echomsg 'The SML/NJ repl buffer is not running. Start it with :SMLReplStart'
-      echohl None
+      call bettersml#Error('The SML/NJ repl buffer is not running. Start it with :SMLReplStart')
       return
   endif
 
@@ -130,7 +179,7 @@ function! bettersml#process#SendCommand(command) abort
     " terminating the tmux command, instead of making it through to the repl.
     VimuxRunCommand escape(a:command, ';')
   else
-    call bettersml#process#ValidateBackend(g:sml_repl_backend)
+    call bettersml#Enforce(bettersml#process#CheckBackend(g:sml_repl_backend))
   endif
 endfunction
 
