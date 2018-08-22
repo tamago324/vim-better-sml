@@ -20,30 +20,30 @@ endfunction
 " file matching a:what; return path to that file
 " Credit: vim-syntastic
 function! bettersml#util#findGlobInParent(what, where) abort
-    let here = fnamemodify(a:where, ':p')
+    let l:here = fnamemodify(a:where, ':p')
 
-    let root = '/'
+    let l:root = '/'
 
-    let old = ''
-    while here !=# ''
+    let l:old = ''
+    while l:here !=# ''
         try
             " Vim 7.4.279 and later
-            let p = globpath(here, a:what, 1, 1)
+            let l:p = globpath(l:here, a:what, 1, 1)
         catch /\m^Vim\%((\a\+)\)\=:E118/
-            let p = split(globpath(here, a:what, 1), "\n")
+            let l:p = split(globpath(l:here, a:what, 1), "\n")
         endtry
 
-        if !empty(p)
-            return fnamemodify(p[0], ':p')
-        elseif here ==? root || here ==? old
+        if !empty(l:p)
+            return fnamemodify(l:p[0], ':p')
+        elseif l:here ==? l:root || l:here ==? l:old
             break
         endif
 
-        let old = here
+        let l:old = l:here
 
         " we use ':h:h' rather than ':h' since ':p' adds a trailing '/'
         " if 'here' is a directory
-        let here = fnamemodify(here, ':p:h:h')
+        let l:here = fnamemodify(l:here, ':p:h:h')
     endwhile
 
     return ''
@@ -55,21 +55,26 @@ endfunction
 
 " Ensure that the *.ud file is up-to-date
 function! bettersml#util#LoadUseDef() abort
-  let vbsUtil = bettersml#util#GetVbsUtil()
-  if !executable(l:vbsUtil)
-    echom "Have you built the support files?  :help vim-better-sml-def-use"
+  let l:vbsUtil = bettersml#util#GetVbsUtil()
+  if l:vbsUtil ==# ''
+    " The support files are compiling. An message was already printed.
     return ''
   endif
 
-  let duf = bettersml#util#LoadDefUse()
+  if !executable(l:vbsUtil)
+    echom 'Have you built the support files?  :help vim-better-sml-def-use'
+    return ''
+  endif
+
+  let l:duf = bettersml#util#LoadDefUse()
 
   " duf doesn't exist; ask user to build
   if l:duf ==# ''
-    echom "You need to build a def-use file first.  :help vim-better-sml-def-use"
+    echom 'You need to build a def-use file first.  :help vim-better-sml-def-use'
     return ''
   endif
 
-  let udf = fnamemodify(l:duf, ':r').'.ud'
+  let l:udf = fnamemodify(l:duf, ':r').'.ud'
 
   " udf doesn't exist or out of date
   if !filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
