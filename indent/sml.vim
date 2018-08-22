@@ -48,7 +48,7 @@ let s:type = '^\s*\%(let\|type\)\>.*='
 let s:val = '^\s*\(val\|external\)\>.*:'
 
 " Skipping pattern, for comments
-function! s:SkipPattern(lnum, pat)
+function! s:SkipPattern(lnum, pat) abort
   let def = prevnonblank(a:lnum - 1)
   while def > 0 && getline(def) =~ a:pat
     let def = prevnonblank(def - 1)
@@ -57,7 +57,7 @@ function! s:SkipPattern(lnum, pat)
 endfunction
 
 " Indent for ';;' to match multiple 'let'
-function! s:GetInd(lnum, pat, lim)
+function! s:GetInd(lnum, pat, lim) abort
   let llet = search(a:pat, 'bW')
   let old = indent(a:lnum)
   while llet > 0
@@ -72,7 +72,7 @@ function! s:GetInd(lnum, pat, lim)
 endfunction
 
 " Indent pairs
-function! s:FindPair(pstart, pmid, pend)
+function! s:FindPair(pstart, pmid, pend) abort
   call search(a:pend, 'bW')
 "  return indent(searchpair(a:pstart, a:pmid, a:pend, 'bWn', 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string\\|comment"'))
   let lno = searchpair(a:pstart, a:pmid, a:pend, 'bW', 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string\\|comment"')
@@ -83,7 +83,7 @@ function! s:FindPair(pstart, pmid, pend)
   endif
 endfunction
 
-function! s:FindLet(pstart, pmid, pend)
+function! s:FindLet(pstart, pmid, pend) abort
   call search(a:pend, 'bW')
 "  return indent(searchpair(a:pstart, a:pmid, a:pend, 'bWn', 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string\\|comment"'))
   let lno = searchpair(a:pstart, a:pmid, a:pend, 'bW', 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string\\|comment"')
@@ -101,7 +101,7 @@ endfunction
 "  return indent(searchpair(a:pstart, a:pmid, a:pend, 'bWn', 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string\\|comment" || getline(".") =~ "^\\s*let\\>.*=.*\\<in\\s*$" || getline(prevnonblank(".") - 1) =~ "^\\s*let\\>.*=\\s*$\\|" . s:beflet'))
 "endfunction
 
-function! GetSMLIndent()
+function! GetSMLIndent() abort
   " Find a non-blank line above the current line.
   let lnum = prevnonblank(v:lnum - 1)
 
