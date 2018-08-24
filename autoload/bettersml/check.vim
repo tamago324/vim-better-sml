@@ -5,14 +5,15 @@
 " License: MIT License
 
 
-function! bettersml#check#Smlnj(smlnj_exe) abort
-  if executable(a:smlnj_exe)
-    return ['ok', "SML/NJ is executable at '".a:smlnj_exe."'.", []]
+function! bettersml#check#Smlnj() abort
+  if executable(g:sml_smlnj_executable)
+    return ['ok', "SML/NJ is executable at '".g:sml_smlnj_executable."'.", []]
   else
     return [
     \   'error',
-    \   "SML/NJ is not executable: '".a:smlnj_exe."'.",
+    \   "SML/NJ is not executable: '".g:sml_smlnj_executable."'.",
     \   [
+    \     'SML/NJ only required to launch an integrated REPL.',
     \     "Potential fix: Ensure the 'sml' command is in your $PATH.",
     \     'Potential fix: Set g:sml_smlnj_executable to the absolute path to SML/NJ.',
     \   ]
@@ -34,30 +35,49 @@ function! bettersml#check#Rlwrap() abort
   endif
 endfunction
 
-function! bettersml#check#Support(vbs_util) abort
-  if executable(a:vbs_util)
-    return ['ok', 'The support files have been compiled.', []]
+function! bettersml#check#Support() abort
+  let l:vbs_util = bettersml#ScriptRoot().'/bin/vbs-util'
+  if executable(l:vbs_util)
+    return ['ok', "Support files are executable at '".l:vbs_util."'.", []]
   else
     return [
     \   'error',
     \   'The support files are not executable.',
     \   [
     \     'Certain features like type information and jump to definition',
-    \     'require that the support files be built.',
-    \     'When MLton is installed, the support files are auto-built.',
-    \     'See :help vim-better-sml-def-use for manual setup instructions.',
+    \     'require that the support files be built. When MLton is installed,',
+    \     "the support files are auto-built; in fact, it's possible they're",
+    \     'being built right now (you can check by running :messages).',
+    \     'Otherwise, see :help vim-better-sml-def-use for manual setup.',
     \   ]
     \ ]
   endif
 endfunction
 
-function! bettersml#check#Mlton(mlton_exe) abort
-  if executable(a:mlton_exe)
-    return ['ok', "MLton is executable at '".a:mlton_exe."'.", []]
+function! bettersml#check#JobStart() abort
+  if !exists('*jobstart') && !exists('*job_start')
+    return [
+    \   'error',
+    \   'Asynchronous jobs are not available.',
+    \   [
+    \     'Async jobs are required to launch certain background tasks,',
+    \     'like using MLton to compile the support files and auto create',
+    \     'def-use indices for type information.',
+    \     'See :help vim-better-sml-def-use for manual setup instructions.',
+    \   ],
+    \ ]
+  else
+    return ['ok', 'Asynchronous jobs are available.', []]
+  endif
+endfunction
+
+function! bettersml#check#Mlton() abort
+  if executable(g:sml_mlton_executable)
+    return ['ok', "MLton is executable at '".g:sml_mlton_executable."'.", []]
   else
     return [
     \   'error',
-    \   "MLton is not executable: '".a:mlton_exe."'.",
+    \   "MLton is not executable: '".g:sml_mlton_executable."'.",
     \   [
     \     'MLton is only required for features like :SMLTypeQuery and :SMLJumpToDef.',
     \     "Potential fix: Ensure the 'mlton' command is in your $PATH.",
@@ -73,7 +93,7 @@ function! bettersml#check#Ale() abort
   else
     return [
     \   'error',
-    \   'The :SMLRepl* functions require w0rp/ale to be installed.',
+    \   'You must have w0rp/ale installed to use the embedded REPL.',
     \   [
     \     'Why? ALE is able to robustly discover CM files for SML/NJ projects.',
     \     "Rather than duplicate that logic, we call into ALE's helpers.",
@@ -81,5 +101,30 @@ function! bettersml#check#Ale() abort
     \     'you just have to have the ALE plugin installed.',
     \   ]
     \ ]
+  endif
+endfunction
+
+function! bettersml#check#Diagnostics() abort
+  if exists('g:loaded_ale') && exists('g:loaded_syntastic_plugin')
+    return [
+    \   'warn',
+    \   'Both ALE and Syntastic are loaded. Consider only uninstalling one.',
+    \   [
+    \     'ALE and Syntastic offer similar features, and frequently step on',
+    \     "each others toes. We recommend ALE, as it's faster and more robust.",
+    \   ]
+    \ ]
+  elseif !exists('g:loaded_ale') && !exists('g:loaded_syntastic_plugin')
+    return [
+    \   'warn',
+    \   'Compilation errors will not be reported.',
+    \   [
+    \     'To have Vim report SML errors and warnings alongside your code,',
+    \     'install one of w0rp/ale or scrooloose/syntastic.',
+    \     'Also be sure to have SML/NJ installed.',
+    \   ]
+    \ ]
+  else
+    return ['ok', 'Either ALE or Syntastic is installed.', []]
   endif
 endfunction

@@ -5,13 +5,13 @@
 " License: MIT License
 
 function! bettersml#util#GetVbsUtil() abort
-  let l:vbs_util = bettersml#ScriptRoot().'/bin/vbs-util'
-  let [l:severity, l:msg, l:suggestions] = bettersml#check#Support(l:vbs_util)
+  let [l:severity, l:msg, l:suggestions] = bettersml#check#Support()
   if l:severity ==# 'error'
     call bettersml#process#BuildVbsUtil()
     " Builds support files asynchronously. For now, return ''
     return ''
   else
+    let l:vbs_util = bettersml#ScriptRoot().'/bin/vbs-util'
     return l:vbs_util
   endif
 endfunction

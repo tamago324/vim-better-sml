@@ -21,39 +21,21 @@
 " If in the future you're considering invalidating any of these points,
 " consider studying the intero-neovim codebase as a frame of reference.
 
-" ----- Defaults ------------------------------------------------------------
-
-if !exists('g:sml_repl_backend')
-  if exists('*jobstart')
-    let g:sml_repl_backend = 'neovim'
-  elseif exists('$TMUX') && exists(':VimuxRunCommand')
-    let g:sml_repl_backend = 'vimux'
-  else
-    let g:sml_repl_backend = ''
-  endif
-endif
-
-if !exists('g:sml_smlnj_executable')
-  let g:sml_smlnj_executable = 'sml'
-endif
-
-if !exists('g:sml_repl_options')
-  let g:sml_repl_options = ''
-endif
-
-if !exists('g:sml_mlton_executable')
-  let g:sml_mlton_executable = 'mlton'
-endif
-
 " ----- Sanity checks -------------------------------------------------------
 
-function! bettersml#process#CheckBackend(backend) abort
+function! bettersml#process#CheckBackend() abort
   let l:backends = {
         \ 'neovim': 1,
         \ 'vimux': 1,
         \ }
-  if !has_key(l:backends, a:backend)
-    if a:backend ==# ''
+  if has_key(l:backends, g:sml_repl_backend)
+    return [
+    \   'ok',
+    \   'REPL backend is available and valid: '.g:sml_repl_backend,
+    \   []
+    \ ]
+  else
+    if g:sml_repl_backend ==# ''
       return [
       \   'error',
       \   'No REPL backend available.',
@@ -69,25 +51,6 @@ function! bettersml#process#CheckBackend(backend) abort
       \   ['Valid backends: '.join(keys(l:backends), ', ')]
       \ ]
     endif
-  else
-    return ['ok', 'REPL backend is available and valid: '.a:backend, []]
-  endif
-endfunction
-
-function! bettersml#process#CheckJobStart() abort
-  if !exists('*jobstart') && !exists('*job_start')
-    return [
-    \   'error',
-    \   'Asynchronous jobs are not available.',
-    \   [
-    \     'Async jobs are required to launch certain background tasks,',
-    \     'like using MLton to compile the support files and auto create',
-    \     'def-use indices for type information.',
-    \     'See :help vim-better-sml-def-use for manual setup instructions.',
-    \   ],
-    \ ]
-  else
-    return ['ok', 'Asynchronous jobs are available.', []]
   endif
 endfunction
 
@@ -100,7 +63,7 @@ function! bettersml#process#StartBuffer(options) abort
     return
   endif
 
-  call bettersml#Enforce(bettersml#check#Smlnj(g:sml_smlnj_executable))
+  call bettersml#Enforce(bettersml#check#Smlnj())
 
   let l:args = [g:sml_smlnj_executable, g:sml_repl_options, a:options]
   if executable('rlwrap')
@@ -137,7 +100,7 @@ function! bettersml#process#StartBuffer(options) abort
     VimuxRunCommand l:command
 
   else
-    call bettersml#Enforce(bettersml#process#CheckBackend(g:sml_repl_backend))
+    call bettersml#Enforce(bettersml#process#CheckBackend())
 
   endif
 endfunction
@@ -148,7 +111,7 @@ function! bettersml#process#KillBuffer() abort
     call bettersml#Error("SML/NJ repl buffer isn't started or has already been killed.")
     silent! unlet s:repl_job_id
     return
-  end
+  endif
 
   if g:sml_repl_backend ==# 'neovim'
     if bufexists(s:repl_buffer_id)
@@ -160,8 +123,8 @@ function! bettersml#process#KillBuffer() abort
     silent! unlet s:repl_job_id
     silent! unlet s:repl_buffer_id
   else
-    call bettersml#Enforce(bettersml#process#CheckBackend(g:sml_repl_backend))
-  end
+    call bettersml#Enforce(bettersml#process#CheckBackend())
+  endif
 endfunction
 
 " Sends a command to the terminal backend.
@@ -179,12 +142,12 @@ function! bettersml#process#SendCommand(command) abort
     " terminating the tmux command, instead of making it through to the repl.
     VimuxRunCommand escape(a:command, ';')
   else
-    call bettersml#Enforce(bettersml#process#CheckBackend(g:sml_repl_backend))
+    call bettersml#Enforce(bettersml#process#CheckBackend())
   endif
 endfunction
 
 " Callback used with the exit handler for BuildVbsUtil
-function! bettersml#process#FinishBuildVbsUtil(job_id, rc, ...) abort dict
+function! bettersml#process#FinishBuildVbsUtil(job_id, rc, ...) abort
   " There's an extra arg Neovim passes us, but we don't need it.
   if a:rc ==# 0
     echom 'Support files have been compiled. Re-run whatever command you were trying to run.'
@@ -196,8 +159,8 @@ endfunction
 
 " Builds the support files from source on demand
 function! bettersml#process#BuildVbsUtil() abort
-  call bettersml#Enforce(bettersml#check#Mlton(g:sml_mlton_executable))
-  call bettersml#Enforce(bettersml#process#CheckJobStart())
+  call bettersml#Enforce(bettersml#check#Mlton())
+  call bettersml#Enforce(bettersml#check#JobStart())
 
   if exists('s:make_job_id')
     echom 'Support files are already compiling. Please wait for them to finish.'
