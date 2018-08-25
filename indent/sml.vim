@@ -134,7 +134,6 @@ function! GetSMLIndent() abort
   " Be warned: changing the value of 'comments' won't work as expected,
   " because this indent script overwrites the indentation level on <CR>.
   elseif line =~ '^\s*\*'
-    echom "hello"
     call search('(\*',"bW")
     let ind = col(".")
 

@@ -152,7 +152,7 @@ function! bettersml#process#FinishBuildVbsUtil(job_id, rc, ...) abort
   if a:rc ==# 0
     echom 'Support files have been compiled. Re-run whatever command you were trying to run.'
   else
-    call bettersml#Error('Failed to compile support files. See :help vim-better-sml-def-use for manual instructions.')
+    call bettersml#Error('Failed to compile support files. See :help vim-better-sml-support for manual instructions.')
   endif
   silent! unlet s:make_job_id
 endfunction

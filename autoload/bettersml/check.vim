@@ -48,7 +48,7 @@ function! bettersml#check#Support() abort
     \     'require that the support files be built. When MLton is installed,',
     \     "the support files are auto-built; in fact, it's possible they're",
     \     'being built right now (you can check by running :messages).',
-    \     'Otherwise, see :help vim-better-sml-def-use for manual setup.',
+    \     'Otherwise, see :help vim-better-sml-support for manual setup.',
     \   ]
     \ ]
   endif

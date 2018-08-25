@@ -57,12 +57,12 @@ endfunction
 function! bettersml#util#LoadUseDef() abort
   let l:vbsUtil = bettersml#util#GetVbsUtil()
   if l:vbsUtil ==# ''
-    " The support files are compiling. An message was already printed.
+    " The support files are compiling. A message was already printed.
     return ''
   endif
 
   if !executable(l:vbsUtil)
-    echom 'Have you built the support files?  :help vim-better-sml-def-use'
+    echom 'Please build the support files manually.  :help vim-better-sml-support'
     return ''
   endif
 
