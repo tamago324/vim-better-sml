@@ -17,10 +17,6 @@ if !exists('g:sml_show_all_unused_warnings')
   let g:sml_show_all_unused_warnings = 0
 endif
 
-if !exists('g:sml_show_all_unused_warnings')
-  let g:sml_show_all_unused_warnings = 0
-endif
-
 if !exists('g:sml_hide_cmlib_unused_warnings')
   let g:sml_hide_cmlib_unused_warnings = 0
 endif
