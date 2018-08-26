@@ -11,8 +11,7 @@ function! bettersml#util#GetVbsUtil() abort
     " Builds support files asynchronously. For now, return ''
     return ''
   else
-    let l:vbs_util = bettersml#ScriptRoot().'/bin/vbs-util'
-    return l:vbs_util
+    return bettersml#ScriptRoot().'/bin/vbs-util'
   endif
 endfunction
 
@@ -54,7 +53,13 @@ function! bettersml#util#LoadDefUse() abort
 endfunction
 
 " Ensure that the *.ud file is up-to-date
-function! bettersml#util#LoadUseDef() abort
+function! bettersml#util#LoadUseDef(...) abort
+  if a:0 ==# 0
+    let l:async = 0
+  else
+    let l:async = 1
+  endif
+
   let l:vbsUtil = bettersml#util#GetVbsUtil()
   if l:vbsUtil ==# ''
     " The support files are compiling. A message was already printed.
@@ -78,7 +83,17 @@ function! bettersml#util#LoadUseDef() abort
 
   " udf doesn't exist or out of date
   if !filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
-    call system(l:vbsUtil.' invert '.l:duf.' > '.l:udf)
+    let l:command = l:vbsUtil.' invert '.l:duf.' > '.l:udf
+
+    if l:async
+      if exists('*jobstart')
+        call jobstart(l:command)
+      elseif exists('*job_start')
+        call job_start(['/bin/sh', '-c', l:command])
+      end
+    else
+      call system(l:command)
+    endif
   endif
 
   return l:udf
@@ -92,8 +107,7 @@ function! bettersml#util#SymLineCol() abort
 endfunction
 
 function! bettersml#util#LoadConfig() abort
-  " TODO(jez) We're hard-coding 'sml.json'.
-  " Can we assume this will always be the config file name?
+  " We're hard-coding 'sml.json' as the config file name.
   return bettersml#util#findGlobInParent('sml.json', expand('%:p:h', 1))
 endfunction
 
@@ -128,4 +142,13 @@ endfunction
 function! bettersml#util#GetCmFileOrEmpty() abort
   let l:cmPattern = bettersml#util#GetCmFilePattern()
   return bettersml#util#findGlobInParent(l:cmPattern, expand('%:p:h', 1))
+endfunction
+
+function! bettersml#util#GetMlbFileOrEmpty() abort
+  return bettersml#util#findGlobInParent('*.mlb', expand('%:p:h', 1))
+endfunction
+
+function! bettersml#util#FormattedDefUseCommand(input, output) abort
+  let l:cmd = g:sml_def_use_command
+  return substitute(substitute(l:cmd, '%i', a:input, ''), '%o', a:output, '')
 endfunction

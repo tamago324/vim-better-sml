@@ -82,7 +82,6 @@ it's always improving!
     - For the embedded REPL:
         - [Neovim], or [Vimux] with tmux
         - SML/NJ (`brew install smlnj`)
-        - [ALE]
     - For language-aware features like type information and go to def:
         - MLton (`brew install mlton`)
         - (optional) [Neovim] or Vim 8 for automatically rebuilding indices
@@ -162,10 +161,13 @@ augroup END
 
 ## Future Features
 
+- [ ] TODO(jez) Support Vim 8 terminal buffer for the REPL
+- [ ] Make an ALE unused variable linter using def-use information
 - [ ] Highlight all uses for a definition
   - Can probably do this with a quickfix window (think: vim-grepper)
 - [ ] Refactoring tool
   - Rename variable under cursor, and all uses of that variable
+- [ ] Support sending a visual selection to the REPL
 - [ ] Refactor most functionality into a standalone language server executable
   - type of ident / go-to-def / etc.
 - [ ] Make it easier to get started porting CM to MLBasis

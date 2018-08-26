@@ -191,3 +191,60 @@ function! bettersml#process#BuildVbsUtil() abort
   endif
 endfunction
 
+function! bettersml#process#FinishBuildDefUse(job_id, rc, ...) abort
+  if a:rc !=# 0
+    " I don't know how to tell whether the return code was non-zero because
+    " compilation failed, or because we preempted it, so just silently return.
+    return
+  endif
+
+  silent! unlet s:defuse_job_id
+
+  let l:async = 1
+  call bettersml#util#LoadUseDef(l:async)
+endfunction
+
+" Builds the def use files
+function! bettersml#process#BuildDefUse() abort
+  call bettersml#Enforce(bettersml#check#Mlton())
+  call bettersml#Enforce(bettersml#check#JobStart())
+
+  if exists('s:defuse_job_id')
+    " Preempt current job
+    if exists('*jobstop')
+      call jobstop(s:defuse_job_id)
+    elseif exists('*job_stop')
+      call job_stop(s:defuse_job_id)
+    end
+  endif
+
+  let l:mlbfile = bettersml#util#GetMlbFileOrEmpty()
+  if l:mlbfile ==# ''
+    if g:sml_auto_create_def_use ==# 'mlb'
+      " No mlb file found; abort
+      return
+    else
+      let l:input = expand('%')
+    endif
+  else
+    let l:input = l:mlbfile
+  end
+  let l:output = shellescape(fnamemodify(l:input, ':r').'.du')
+  let l:input = shellescape(l:input)
+
+  let l:command = bettersml#util#FormattedDefUseCommand(l:input, l:output)
+
+  " Start new job
+
+  if exists('*jobstart')
+    " Neovim
+    let s:defuse_job_id = jobstart(l:command, {
+          \ 'on_exit': 'bettersml#process#FinishBuildDefUse'
+          \ })
+  elseif exists('*job_start')
+    " Vim 8
+    let s:defuse_job_id = job_start(['/bin/sh', '-c', l:command], {
+          \ 'exit_cb': 'bettersml#process#FinishBuildDefUse',
+          \ })
+  endif
+endfunction

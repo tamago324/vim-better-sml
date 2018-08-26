@@ -20,6 +20,14 @@ setlocal commentstring=(*%s*)
 " To fight back, we explicitly turn off the formatprg here.
 setlocal formatprg=
 
+augroup vimbettersml
+  au!
+  " Automatically build def use file on save
+  if g:sml_auto_create_def_use !=# 'never'
+    au BufWritePost <buffer> call bettersml#process#BuildDefUse()
+  endif
+augroup END
+
 " ----- Raimondi/delimitMate -----
 " Single quotes are part of identifiers, and shouldn't always come in pairs.
 let b:delimitMate_quotes = '"'

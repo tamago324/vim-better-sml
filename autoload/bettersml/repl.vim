@@ -11,18 +11,11 @@
 "
 " - people can still use the `it` from their previous command
 " - SML/NJ doesn't print otherwise useless output (like `val it = true;`)
-"
-" We're using w0rp/ale's GetCmFile helper because it respects the
-" g:ale_sml_smlnj_cm_file option, which also has a buffer-local (b:) variant.
-" No sense in duplicating work when most people are going to already use ALE.
 
 " ----- REPL commands -------------------------------------------------------
 
 function! bettersml#repl#ReplStart() abort
-  call bettersml#Enforce(bettersml#check#Ale())
-
-  let l:buffer = bufnr('%')
-  let l:cmfile = ale#handlers#sml#GetCmFile(l:buffer)
+  let l:cmfile = bettersml#util#GetCmFileOrEmpty()
 
   if l:cmfile is# ''
     let l:curfile = expand('%')
@@ -42,8 +35,7 @@ function! bettersml#repl#ReplUse() abort
 endfunction
 
 function! bettersml#repl#ReplBuild() abort
-  let l:buffer = bufnr('%')
-  let l:cmfile = ale#handlers#sml#GetCmFile(l:buffer)
+  let l:cmfile = bettersml#util#GetCmFileOrEmpty()
   if l:cmfile is# ''
     " No CM file found; fall back to using the current file.
     call bettersml#repl#ReplUse()

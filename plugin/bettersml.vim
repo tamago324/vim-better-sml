@@ -27,6 +27,20 @@ if !exists('g:sml_mlton_executable')
   let g:sml_mlton_executable = 'mlton'
 endif
 
+if !exists('g:sml_def_use_command')
+  let g:sml_def_use_command = join([
+        \ g:sml_mlton_executable,
+        \ '-prefer-abs-paths true',
+        \ '-stop tc',
+        \ '-show-def-use %o',
+        \ '%i',
+        \ ])
+endif
+
+if !exists('g:sml_auto_create_def_use')
+  let g:sml_auto_create_def_use = 'mlb'
+endif
+
 " ----- Commands ------------------------------------------------------------
 
 command! -nargs=0 SMLTypeQuery call bettersml#typequery#TypeQuery()

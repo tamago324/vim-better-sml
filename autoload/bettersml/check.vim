@@ -87,23 +87,6 @@ function! bettersml#check#Mlton() abort
   endif
 endfunction
 
-function! bettersml#check#Ale() abort
-  if exists('g:loaded_ale')
-    return ['ok', 'ALE is installed.', []]
-  else
-    return [
-    \   'error',
-    \   'You must have w0rp/ale installed to use the embedded REPL.',
-    \   [
-    \     'Why? ALE is able to robustly discover CM files for SML/NJ projects.',
-    \     "Rather than duplicate that logic, we call into ALE's helpers.",
-    \     "Note that you don't have to have any SML linters enabled;",
-    \     'you just have to have the ALE plugin installed.',
-    \   ]
-    \ ]
-  endif
-endfunction
-
 function! bettersml#check#Diagnostics() abort
   if exists('g:loaded_ale') && exists('g:loaded_syntastic_plugin')
     return [
@@ -126,5 +109,38 @@ function! bettersml#check#Diagnostics() abort
     \ ]
   else
     return ['ok', 'Either ALE or Syntastic is installed.', []]
+  endif
+endfunction
+
+function! bettersml#check#MLB() abort
+  let l:mlbfile = bettersml#util#GetMlbFileOrEmpty()
+
+  if l:mlbfile !=# ''
+    return ['ok', 'MLBasis file found: '.l:mlbfile, []]
+  endif
+
+  let l:cmfile = bettersml#util#GetCmFileOrEmpty()
+
+  if l:cmfile !=# ''
+    return [
+    \   'warn',
+    \   'Found CM file for project, but no MLB file.',
+    \   [
+    \     'vim-better-sml requires an MLB file for multi-file projects to',
+    \     'provide features like type information and jump to definition.',
+    \     'See :help vim-better-sml-mlbasis for more information.',
+    \   ]
+    \ ]
+  elseif g:sml_auto_create_def_use ==# 'mlb'
+    return [
+    \   'warn',
+    \   'def-use files will not be auto-built',
+    \   [
+    \     'We did not find an MLBasis file for your project, and you have',
+    \     "g:sml_auto_create_def_use = 'mlb'. This means that def-use files",
+    \     'will only be auto-built for multi-file projects.',
+    \     'See :help g:sml_auto_create_def_use for more information.',
+    \   ]
+    \ ]
   endif
 endfunction

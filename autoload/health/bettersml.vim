@@ -63,7 +63,6 @@ endfunction
 function! health#bettersml#check() abort
   call s:ReportStart('REPL')
 
-  call s:ReportCheck(bettersml#check#Ale())
   call s:ReportCheck(bettersml#check#Smlnj())
   call s:ReportCheck(bettersml#check#Rlwrap())
 
@@ -82,6 +81,7 @@ function! health#bettersml#check() abort
   call s:ReportStart('General')
 
   call s:ReportCheck(bettersml#check#JobStart())
+  call s:ReportCheck(bettersml#check#MLB())
   call s:ReportCheck(bettersml#check#Diagnostics())
 endfunction
 
