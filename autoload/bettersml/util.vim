@@ -75,7 +75,13 @@ function! bettersml#util#LoadUseDef(...) abort
 
   " duf doesn't exist; ask user to build
   if l:duf ==# ''
-    echom 'You need to build a def-use file first.  :help vim-better-sml-def-use'
+    if g:sml_auto_create_def_use ==# 'never' ||
+          \ (g:sml_auto_create_def_use ==# 'mlb' &&
+          \ bettersml#util#GetMlbFileOrEmpty() ==# '')
+      echom 'You need to build a def-use file first.  :help vim-better-sml-def-use'
+    else
+      echom 'No def-use file found. Maybe save the file, or wait for the build to finish?  :help vim-better-sml-def-use'
+    endif
     return ''
   endif
 
