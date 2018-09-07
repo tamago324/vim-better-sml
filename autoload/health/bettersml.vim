@@ -63,6 +63,7 @@ endfunction
 function! health#bettersml#check() abort
   call s:ReportStart('REPL')
 
+  call s:ReportCheck(bettersml#process#CheckBackend())
   call s:ReportCheck(bettersml#check#Smlnj())
   call s:ReportCheck(bettersml#check#Rlwrap())
 
