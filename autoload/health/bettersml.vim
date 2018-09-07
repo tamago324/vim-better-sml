@@ -20,7 +20,7 @@ function! s:ReportOk(msg) abort
   if exists('*health#report_ok()')
     call health#report_ok(a:msg)
   else
-    echom '  - OK: '.a:msg
+    echom '  - ok: '.a:msg
   endif
 endfunction
 
@@ -30,7 +30,7 @@ function! s:ReportWarn(msg, suggestions) abort
   else
     echom '  - warn: '.a:msg
     for l:suggestion in a:suggestions
-      echom '    - '.l:suggestion
+      echom '      - '.l:suggestion
     endfor
   endif
 endfunction
@@ -41,7 +41,7 @@ function! s:ReportError(msg, suggestions) abort
   else
     echom '  - error: '.a:msg
     for l:suggestion in a:suggestions
-      echom '    - '.l:suggestion
+      echom '      - '.l:suggestion
     endfor
   endif
 endfunction

@@ -142,5 +142,16 @@ function! bettersml#check#MLB() abort
     \     'See :help g:sml_auto_create_def_use for more information.',
     \   ]
     \ ]
+  else
+    return [
+    \   'warn',
+    \   'Running mlton in single-file mode.',
+    \   [
+    \     'vim-better-sml usually looks for an MLB file to provide features ',
+    \     'like type information and jump to definition. If your SML file is',
+    \     'actually part of a larger project, consider creating an MLB file.',
+    \     'See :help vim-better-sml-mlbasis for more information.',
+    \   ]
+    \ ]
   endif
 endfunction
