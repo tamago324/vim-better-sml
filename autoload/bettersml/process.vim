@@ -63,7 +63,9 @@ function! bettersml#process#StartBuffer(options) abort
     return
   endif
 
-  call bettersml#Enforce(bettersml#check#Smlnj())
+  if !bettersml#Enforce(bettersml#check#Smlnj())
+    return
+  end
 
   let l:args = [g:sml_smlnj_executable, g:sml_repl_options, a:options]
   if executable('rlwrap')
@@ -159,8 +161,12 @@ endfunction
 
 " Builds the support files from source on demand
 function! bettersml#process#BuildVbsUtil() abort
-  call bettersml#Enforce(bettersml#check#Mlton())
-  call bettersml#Enforce(bettersml#check#JobStart())
+  if !bettersml#Enforce(bettersml#check#Mlton())
+    return
+  end
+  if !bettersml#Enforce(bettersml#check#JobStart())
+    return
+  end
 
   if exists('s:make_job_id')
     echom 'Support files are already compiling. Please wait for them to finish.'
@@ -206,8 +212,12 @@ endfunction
 
 " Builds the def use files
 function! bettersml#process#BuildDefUse() abort
-  call bettersml#Enforce(bettersml#check#Mlton())
-  call bettersml#Enforce(bettersml#check#JobStart())
+  if !bettersml#Enforce(bettersml#check#Mlton())
+    return
+  end
+  if !bettersml#Enforce(bettersml#check#JobStart())
+    return
+  end
 
   if exists('s:defuse_job_id')
     " Preempt current job

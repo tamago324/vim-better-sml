@@ -20,7 +20,7 @@ function! bettersml#Enforce(check) abort
   let [l:severity, l:msg, l:suggestions] = a:check
 
   if l:severity ==# 'ok'
-    return
+    return 1
   endif
 
   if len(l:suggestions) > 1
@@ -29,10 +29,7 @@ function! bettersml#Enforce(check) abort
     let l:formatted = join([l:msg, join(l:suggestions)])
   endif
 
-  if l:severity ==# 'error'
-    throw l:severity.': '.l:formatted
-  elseif l:severity ==# 'warn'
-    call bettersml#Error(l:severity.': '.l:formatted)
-  endif
+  call bettersml#Error(l:severity.': '.l:formatted)
+  return 0
 endfunction
 
