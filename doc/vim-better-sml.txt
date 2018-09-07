@@ -305,7 +305,7 @@ CONFIGURATION                                         *vim-better-sml-config*
 
   If you never want to auto build def-use files, set this option to `'never'`.
 
-  Whenever a process is launched to auto-build a def-use file, it's launched
+  Whenever a process is launched to auto build a def-use file, it's launched
   asynchronously, and so should not interfere with the editing experience.
 
   See also: |vim-better-sml-mlbasis|, |vim-better-sml-def-use|
@@ -374,12 +374,15 @@ An MLton def-use file is essentially an index of all variable definitions,
 uses, and their types for an entire project. vim-better-sml uses def-use files
 to provide features like type information and jump to definition.
 
-By default, vim-better-sml handles building def-use files for your project, as
-long as it can compile it. In particular, see |vim-better-sml-mlbasis| to
-teach vim-better-sml how to build your project.
+By default, vim-better-sml will attempt to auto build def-use files if it
+detects an MLBasis file for your project (see |vim-better-sml-mlbasis|).
+
+If you'd like to configure when or whether def-use files get auto generated
+for your project, see |g:sml_auto_create_def_use|.
 
 If for whatever reason vim-better-sml can't build def-use files for your
-project automatically, run one of these commands:
+project automatically, you'll need to build one manually, and keep it in sync
+with your changes.
 
 For a single-file called `example.sml`:
 >
