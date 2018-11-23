@@ -10,7 +10,7 @@ REPL, and more.
 
 Here's a quick screencast to show off some of it's best features:
 
-TODO(jez) Stream recording or asciinema showing off key features.
+<!-- TODO(jez) Stream recording or asciinema showing off key features. -->
 
 - - -
 
