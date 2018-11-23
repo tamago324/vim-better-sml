@@ -374,6 +374,10 @@ MLBasis file:
 
     http://mlton.org/MLBasis
 
+Note that MLBasis files are completely different from the SML Basis Library.
+The former is a file format to describe how to build an SML project unter
+MLton. The latter is a set of SML structures and signatures included by the
+SML compiler for you automatically.
 
 Building def-use Files~
                                                      *vim-better-sml-def-use*
