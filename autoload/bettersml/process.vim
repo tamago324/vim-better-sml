@@ -198,13 +198,13 @@ function! bettersml#process#BuildVbsUtil() abort
 endfunction
 
 function! bettersml#process#FinishBuildDefUse(job_id, rc, ...) abort
+  silent! unlet s:defuse_job_id
+
   if a:rc !=# 0
     " I don't know how to tell whether the return code was non-zero because
     " compilation failed, or because we preempted it, so just silently return.
     return
   endif
-
-  silent! unlet s:defuse_job_id
 
   let l:async = 1
   call bettersml#util#LoadUseDef(l:async)
