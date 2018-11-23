@@ -161,7 +161,10 @@ augroup END
 
 ## Future Features
 
-- [ ] TODO(jez) Support Vim 8 terminal buffer for the REPL
+> None of these are currently in progress. If you're interested in seeing these
+> worked on, let me know!
+
+- [ ] Support Vim 8 terminal buffer for the REPL
 - [ ] Make an ALE unused variable linter using def-use information
 - [ ] Highlight all uses for a definition
   - Can probably do this with a quickfix window (think: vim-grepper)
