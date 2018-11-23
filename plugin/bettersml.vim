@@ -53,6 +53,7 @@ command! -nargs=0 SMLReplBuild call bettersml#repl#ReplBuild()
 command! -nargs=0 SMLReplClear call bettersml#repl#ReplClear()
 command! -nargs=0 SMLReplOpen call bettersml#repl#ReplOpen()
 command! -nargs=? SMLReplPrintDepth call bettersml#repl#ReplPrintDepth(<f-args>)
+command! -nargs=? SMLReplShell call bettersml#repl#ReplShell(<f-args>)
 
 " Neovim has a robust healthcheck framework for reporting checks.
 " For Vim 8, we just echo messages.

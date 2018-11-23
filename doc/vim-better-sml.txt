@@ -229,6 +229,14 @@ Integrated REPL~
 
   Set the print depth in the REPL to 100, or to <depth> if specified.
 
+*:SMLReplShell* [<shell>]
+
+  Send a command to the REPL buffer to launch a shell. By default, will use
+  the contents of `$SHELL` to launch the shell, or `/bin/sh` if unset.
+
+  You can override this default by passing the shell you want to launch as the
+  first argument.
+
 
 =============================================================================
 CONFIGURATION                                         *vim-better-sml-config*

@@ -76,3 +76,15 @@ function! bettersml#repl#ReplPrintDepth(...) abort
 
   call bettersml#process#SendCommand('val _ = Control.Print.printDepth := '.l:depth.';')
 endfunction
+
+function! bettersml#repl#ReplShell(...) abort
+  if a:0 ==# 1
+    let l:shell = a:1
+  elseif $SHELL !=# ''
+    let l:shell = $SHELL
+  else
+    let l:shell = '/bin/sh'
+  endif
+
+  call bettersml#process#SendCommand('val _ = OS.Process.system "'.l:shell.'";')
+endfunction
