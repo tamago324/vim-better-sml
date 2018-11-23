@@ -34,8 +34,6 @@ CONTENTS                                            *vim-better-sml-contents*
 =============================================================================
 FEATURES                                            *vim-better-sml-features*
 
-TODO(jez) Link to screencast / asciicast here
-
 Screenshot:
 https://raw.githubusercontent.com/jez/vim-better-sml/master/sample/example.png
 
