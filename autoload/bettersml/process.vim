@@ -57,7 +57,7 @@ endfunction
 " ----- Terminal buffer / pane control --------------------------------------
 
 " Creates a new buffer for the SML/NJ repl
-function! bettersml#process#StartBuffer(options) abort
+function! bettersml#process#StartBuffer() abort
   if exists('s:repl_buffer_id')
     call bettersml#Error('SML/NJ repl buffer has already been started.')
     return
@@ -67,7 +67,7 @@ function! bettersml#process#StartBuffer(options) abort
     return
   end
 
-  let l:args = [g:sml_smlnj_executable, g:sml_repl_options, a:options]
+  let l:args = [g:sml_smlnj_executable, g:sml_repl_options]
   if executable('rlwrap')
     call insert(l:args, 'rlwrap', 0)
   endif

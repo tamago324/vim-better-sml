@@ -15,14 +15,8 @@
 " ----- REPL commands -------------------------------------------------------
 
 function! bettersml#repl#ReplStart() abort
-  let l:cmfile = bettersml#util#GetCmFileOrEmpty()
-
-  if l:cmfile is# ''
-    let l:curfile = expand('%')
-    call bettersml#process#StartBuffer(l:curfile)
-  else
-    call bettersml#process#StartBuffer("-m '".l:cmfile."'")
-  endif
+  call bettersml#process#StartBuffer()
+  call bettersml#repl#ReplBuild()
 endfunction
 
 function! bettersml#repl#ReplStop() abort
