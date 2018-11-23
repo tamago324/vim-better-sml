@@ -1,10 +1,15 @@
+(* --- setup --- *)
 val foo = 42
 infixr 0 $
 fun f $ x = f x
 fun println s = print $ s ^ "\n"
 
 (* 'fun' is different color from 'val' *)
-fun bar x = x * foo
+fun bar x =
+  (* Let expressions are indented under fun expressions *)
+  let val y = x * foo in
+    y
+  end
 
 (* Use :SMLTypeQuery to look up the types of identifiers: *)
 fun thirdElem (xs : 'a list) = List.nth (xs, 3)
@@ -20,4 +25,5 @@ val addOne = fn x => x + 1
 val _ = println o Int.toString o valOf $ SOME 42
 (* ... and '$' stands out in a different color *)
 
+(* Use w0rp/ale to show SML/NJ errors inline. *)
 val five = addOne "4"
