@@ -34,6 +34,9 @@ CONTENTS                                            *vim-better-sml-contents*
 =============================================================================
 FEATURES                                            *vim-better-sml-features*
 
+Screencast:
+https://youtu.be/Z5FsPZ5cm8Y
+
 Screenshot:
 https://raw.githubusercontent.com/jez/vim-better-sml/master/sample/example.png
 
