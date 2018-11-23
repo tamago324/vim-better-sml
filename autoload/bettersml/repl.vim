@@ -29,6 +29,11 @@ function! bettersml#repl#ReplStop() abort
   call bettersml#process#KillBuffer()
 endfunction
 
+function! bettersml#repl#ReplSend(...) abort
+  let l:cmd = join(a:000)
+  call bettersml#process#SendCommand(l:cmd)
+endfunction
+
 function! bettersml#repl#ReplUse() abort
   let l:curfile = expand('%')
   call bettersml#process#SendCommand('val _ = use "'.l:curfile.'";')

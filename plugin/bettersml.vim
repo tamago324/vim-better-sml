@@ -48,6 +48,7 @@ command! -nargs=0 SMLJumpToDef call bettersml#jumptodef#JumpToDef()
 
 command! -nargs=0 SMLReplStart call bettersml#repl#ReplStart()
 command! -nargs=0 SMLReplStop call bettersml#repl#ReplStop()
+command! -nargs=* SMLReplSend call bettersml#repl#ReplSend(<f-args>)
 command! -nargs=0 SMLReplUse call bettersml#repl#ReplUse()
 command! -nargs=0 SMLReplBuild call bettersml#repl#ReplBuild()
 command! -nargs=0 SMLReplClear call bettersml#repl#ReplClear()
