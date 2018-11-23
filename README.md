@@ -182,6 +182,7 @@ augroup END
 
 <!-- References -->
 
+[def-use]: http://mlton.org/EmacsDefUseMode#_usage
 [vim-plug]: https://github.com/junegunn/vim-plug
 [vim-ide]: https://github.com/jez/vim-as-an-ide
 [Neovim]: https://neovim.io
