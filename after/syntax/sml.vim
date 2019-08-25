@@ -141,6 +141,10 @@ syn match smlFunction "\<\$\>"
 " Highlight '#' projections (like '#1' or '#foo') as functions
 syn match smlFunction "\<#\w\+\>"
 
+" Treat 'raise Undefined' as Todo
+syn match smlUndefined "\(\<raise \)\@<=Undefined"
+hi def link smlUndefined Todo
+
 " Color fun and fn as Function
 hi def link smlFunction Function
 hi def link smlFnLam Function
