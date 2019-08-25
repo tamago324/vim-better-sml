@@ -118,6 +118,8 @@ syn keyword  smlKeyword  raise handle type
 " ... and also this line: "rec", "lazy", and "as" are keywords
 " (lazy is only truly a keyword in SML/NJ with 'Control.lazysml := true')
 syn keyword  smlKeyword  val rec lazy as where while with withtype
+" "do" is a Successor ML keyword
+syn keyword  smlKeyword  do
 
 " Finally, define fn with a 'match' not a 'keyword' for the 'contains='
 syn match smlFunction "\<fn\>" contains=smlFnLam,smlFnDot
