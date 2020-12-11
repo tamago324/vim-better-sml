@@ -55,48 +55,48 @@ function! s:ConcealTyvar(tyvar, cchar)
     exec l:cmd
 endfunction
 
-call s:ConcealTyvar('a', 'α')
-call s:ConcealTyvar('alpha', 'α')
-call s:ConcealTyvar('b', 'β')
-call s:ConcealTyvar('beta', 'β')
-call s:ConcealTyvar('c', 'γ')
-call s:ConcealTyvar('gamma', 'γ')
-call s:ConcealTyvar('d', 'δ')
-call s:ConcealTyvar('delta', 'δ')
-call s:ConcealTyvar('e', 'ε')
-call s:ConcealTyvar('epsilon', 'ε')
-
-call s:ConcealTyvar('zeta', 'ζ')
-call s:ConcealTyvar('eta', 'η')
-call s:ConcealTyvar('theta', 'θ')
-call s:ConcealTyvar('kappa', 'κ')
-call s:ConcealTyvar('lambda', 'λ')
-
-call s:ConcealTyvar('m', 'μ')
-call s:ConcealTyvar('mu', 'μ')
-call s:ConcealTyvar('n', 'ν')
-call s:ConcealTyvar('nu', 'ν')
-
-call s:ConcealTyvar('xi', 'ξ')
-
-call s:ConcealTyvar('p', 'π')
-call s:ConcealTyvar('pi', 'π')
-call s:ConcealTyvar('r', 'ρ')
-call s:ConcealTyvar('rho', 'ρ')
-call s:ConcealTyvar('s', 'σ')
-call s:ConcealTyvar('sigma', 'σ')
-call s:ConcealTyvar('t', 'τ')
-call s:ConcealTyvar('tau', 'τ')
-
-call s:ConcealTyvar('upsilon', 'υ')
-call s:ConcealTyvar('phi', 'ϕ')
-call s:ConcealTyvar('x', 'χ')
-call s:ConcealTyvar('chi', 'χ')
-
-call s:ConcealTyvar('psi', 'ψ')
-
-call s:ConcealTyvar('w', 'ω')
-call s:ConcealTyvar('omega', 'ω')
+" call s:ConcealTyvar('a', 'α')
+" call s:ConcealTyvar('alpha', 'α')
+" call s:ConcealTyvar('b', 'β')
+" call s:ConcealTyvar('beta', 'β')
+" call s:ConcealTyvar('c', 'γ')
+" call s:ConcealTyvar('gamma', 'γ')
+" call s:ConcealTyvar('d', 'δ')
+" call s:ConcealTyvar('delta', 'δ')
+" call s:ConcealTyvar('e', 'ε')
+" call s:ConcealTyvar('epsilon', 'ε')
+"
+" call s:ConcealTyvar('zeta', 'ζ')
+" call s:ConcealTyvar('eta', 'η')
+" call s:ConcealTyvar('theta', 'θ')
+" call s:ConcealTyvar('kappa', 'κ')
+" call s:ConcealTyvar('lambda', 'λ')
+"
+" call s:ConcealTyvar('m', 'μ')
+" call s:ConcealTyvar('mu', 'μ')
+" call s:ConcealTyvar('n', 'ν')
+" call s:ConcealTyvar('nu', 'ν')
+"
+" call s:ConcealTyvar('xi', 'ξ')
+"
+" call s:ConcealTyvar('p', 'π')
+" call s:ConcealTyvar('pi', 'π')
+" call s:ConcealTyvar('r', 'ρ')
+" call s:ConcealTyvar('rho', 'ρ')
+" call s:ConcealTyvar('s', 'σ')
+" call s:ConcealTyvar('sigma', 'σ')
+" call s:ConcealTyvar('t', 'τ')
+" call s:ConcealTyvar('tau', 'τ')
+"
+" call s:ConcealTyvar('upsilon', 'υ')
+" call s:ConcealTyvar('phi', 'ϕ')
+" call s:ConcealTyvar('x', 'χ')
+" call s:ConcealTyvar('chi', 'χ')
+"
+" call s:ConcealTyvar('psi', 'ψ')
+"
+" call s:ConcealTyvar('w', 'ω')
+" call s:ConcealTyvar('omega', 'ω')
 
 " --- Coneal lambda functions with lambda ---
 " We need to redefine fn as a 'match', not a 'keyword' because 'keyword' takes
@@ -121,19 +121,19 @@ syn keyword  smlKeyword  val rec lazy as where while with withtype
 " "do" is a Successor ML keyword
 syn keyword  smlKeyword  do
 
-" Finally, define fn with a 'match' not a 'keyword' for the 'contains='
-syn match smlFunction "\<fn\>" contains=smlFnLam,smlFnDot
-syn cluster smlContained add=smlFnLam,smlFnDot
+" " Finally, define fn with a 'match' not a 'keyword' for the 'contains='
+" syn match smlFunction "\<fn\>" contains=smlFnLam,smlFnDot
+" syn cluster smlContained add=smlFnLam,smlFnDot
 " Hack: use two match groups, so we can simulate a two-character conceal
-syn match smlFnLam "f"                 contained conceal cchar=λ
-syn match smlFnDot "n"                 contained conceal cchar=.
+" syn match smlFnLam "f"                 contained conceal cchar=λ
+" syn match smlFnDot "n"                 contained conceal cchar=.
 " -------------------------------------------
 
 " Define match group for SML function keywords
 syn keyword smlFunction fun
 
-" Conceal 'o' (composition function) as unicode character
-syn keyword smlLCIdentifier o conceal cchar=∘
+" " Conceal 'o' (composition function) as unicode character
+" syn keyword smlLCIdentifier o conceal cchar=∘
 
 " Highlight '$' (function application) like functions
 syn match smlFunction "\<\$\>"
@@ -147,5 +147,5 @@ hi def link smlUndefined Todo
 
 " Color fun and fn as Function
 hi def link smlFunction Function
-hi def link smlFnLam Function
+" hi def link smlFnLam Function
 hi def link smlFnDot Function

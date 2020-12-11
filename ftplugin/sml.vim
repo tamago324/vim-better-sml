@@ -20,35 +20,35 @@ setlocal commentstring=(*%s*)
 " To fight back, we explicitly turn off the formatprg here.
 setlocal formatprg=
 
-augroup vimbettersmlinternal
-  au!
-  " Automatically build def use file on save
-  if g:sml_auto_create_def_use !=# 'never'
-    au BufWritePost <buffer> call bettersml#process#BuildDefUse()
-  endif
-augroup END
+" augroup vimbettersmlinternal
+"   au!
+"   " Automatically build def use file on save
+"   if g:sml_auto_create_def_use !=# 'never'
+"     au BufWritePost <buffer> call bettersml#process#BuildDefUse()
+"   endif
+" augroup END
 
 " ----- Raimondi/delimitMate -----
 " Single quotes are part of identifiers, and shouldn't always come in pairs.
 let b:delimitMate_quotes = '"'
 
-" ----- scrooloose/syntastic -----
-" Attempt to detect CM files in SML/NJ checker
-if exists('g:loaded_syntastic_plugin')
-    let s:cm = bettersml#util#GetCmFileOrEmpty()
-    if s:cm !=# ''
-      let s:buf = bufnr('')
-      call setbufvar(s:buf, 'syntastic_sml_smlnj_fname', '')
-      call setbufvar(s:buf, 'syntastic_sml_smlnj_post_args', '-m ' . syntastic#util#shescape(s:cm))
-    endif
-endif
-
-" ----- w0rp/ale -----
-" Set b:sml_smlnj_cm_file using config from JSON file
-if exists('g:loaded_ale')
-  let s:buf = bufnr('')
-  call setbufvar(s:buf, 'ale_sml_smlnj_cm_file', bettersml#util#GetCmFilePattern())
-endif
+" " ----- scrooloose/syntastic -----
+" " Attempt to detect CM files in SML/NJ checker
+" if exists('g:loaded_syntastic_plugin')
+"     let s:cm = bettersml#util#GetCmFileOrEmpty()
+"     if s:cm !=# ''
+"       let s:buf = bufnr('')
+"       call setbufvar(s:buf, 'syntastic_sml_smlnj_fname', '')
+"       call setbufvar(s:buf, 'syntastic_sml_smlnj_post_args', '-m ' . syntastic#util#shescape(s:cm))
+"     endif
+" endif
+"
+" " ----- w0rp/ale -----
+" " Set b:sml_smlnj_cm_file using config from JSON file
+" if exists('g:loaded_ale')
+"   let s:buf = bufnr('')
+"   call setbufvar(s:buf, 'ale_sml_smlnj_cm_file', bettersml#util#GetCmFilePattern())
+" endif
 
 " ----- a.vim -----
 " Sets up *.sig and *.sml files as "alternates", similar to how *.h and *.c
